@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #ffffff;
+  --fg: #111827;
+  --muted: #6b7280;
+  --card: #f9fafb;
+  --accent: #166534;
+}
+
+[data-theme="dark"] {
+  --bg: #0f172a;
+  --fg: #e2e8f0;
+  --muted: #94a3b8;
+  --card: #1e293b;
+  --accent: #4ade80;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+}
+
+.card {
+  background: var(--card);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+}

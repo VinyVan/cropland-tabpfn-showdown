@@ -1,0 +1,52 @@
+# Phase 1 — configuration centrale (seed unique propagé à tous les modèles/splits)
+seed: 32
+
+target: "Cropland"
+group_col: "grid_id"
+region_col: "region"
+location_col: "location"
+
+paths:
+  train_agg: "data/train_agg3.parquet"
+  test_agg: "data/test_agg3.parquet"
+  test_ids: "data/test.csv"
+  fergana_s1: "data/fergana_s1.csv"
+  fergana_s2: "data/fergana_s2.csv"
+  orenburg_s1: "data/orenburg_s1.csv"
+  orenburg_s2: "data/orenburg_s2.csv"
+  fergana_climate: "data/fergana_climate.parquet"
+  orenburg_climate: "data/orenburg_climate.parquet"
+  test_climate: "data/test_climate.parquet"
+  fergana_dem: "data/fergana_dem.csv"
+  orenburg_dem: "data/orenburg_dem.csv"
+  test_dem: "data/test_dem.csv"
+  reports_dir: "reports"
+  figures_dir: "reports/figures"
+  baseline_report: "reports/baseline_metrics.md"
+  spatial_cv_report: "reports/spatial_cv_comparison.md"
+  train_feat: "data/train_feat.parquet"
+  test_feat: "data/test_feat.parquet"
+  ensemble_preds: "preds/ensemble.csv"
+  modeling_report: "reports/modeling_metrics.md"
+  ablation_report: "reports/ablation.md"
+
+cv:
+  n_splits: 5
+  shuffle: true
+
+baseline:
+  ndvi_col: "ndvi_max"
+  ndvi_threshold: 0.6
+  test_size: 0.2
+  rf_n_estimators: 200
+  rf_max_depth: null
+  rf_n_jobs: -1
+
+ensemble:
+  n_estimators: 1000
+  learning_rate: 0.06
+  threshold: 0.5
+  n_jobs: -1
+
+ablation:
+  n_estimators: 300
