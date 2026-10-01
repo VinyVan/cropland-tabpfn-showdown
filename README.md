@@ -52,6 +52,15 @@ Copie `showdown.json` + `lb_scores.json` + `map_points.csv` depuis
 de `web/data/map_points.csv` (600 pts : `translated_lat/lon`, `pred_*`,
 `agreement`) servi via `/data/map_points.csv`.
 
+Showdown-viz : `/performances` ne consomme **aucun nouveau fichier** —
+`web/components/charts.tsx` (recharts) lit les bundles existants
+`web/data/showdown.json` + `web/data/lb_scores.json` via
+`web/lib/showdown.ts` / `web/lib/lb.ts`. Donc `npm run sync-data`
+reste inchangé (aucune extension nécessaire) ; après `npm install
+recharts`, relancer `npm run sync-data` pour fraîcheur. Couleurs charts
+via CSS vars (`--tabpfn`, `--winner`, `--sand-strong`, `--chart-grid`)
+définies dans `web/app/globals.css` (dark-mode aware).
+
 ## Pages
 
 `/`, `/performances` (CV local + table LB officielle Zindi : 5 nôtres +

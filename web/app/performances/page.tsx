@@ -1,9 +1,40 @@
 "use client";
 
 import { Nav, useLang, Bar } from "../../components/ui";
+import {
+  ChartCard,
+  FoldAccuracyChart,
+  LbDuelChart,
+  MetricRadarChart,
+  TrainTimeChart,
+} from "../../components/charts";
 import { dict, tr } from "../../lib/i18n";
 import { lbScores } from "../../lib/lb";
 import { ModelSummary, showdown } from "../../lib/showdown";
+
+function StoryStrip({ lang }: { lang: "fr" | "en" }) {
+  const cards = [
+    { emoji: "🔧", title: tr(lang, dict.perf.cardNoTuning), body: tr(lang, dict.perf.cardNoTuningBody) },
+    { emoji: "🧱", title: tr(lang, dict.perf.cardNoFe), body: tr(lang, dict.perf.cardNoFeBody) },
+    { emoji: "⚡", title: tr(lang, dict.perf.cardOnePass), body: tr(lang, dict.perf.cardOnePassBody) },
+    { emoji: "🚀", title: tr(lang, dict.perf.cardFaster), body: tr(lang, dict.perf.cardFasterBody) },
+  ];
+  return (
+    <section className="mt-6">
+      <h2 className="text-xl font-semibold">{tr(lang, dict.perf.storyTitle)}</h2>
+      <p className="mt-1 text-sm opacity-80">{tr(lang, dict.perf.storySub)}</p>
+      <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {cards.map((c) => (
+          <div key={c.title} className="card">
+            <div className="text-2xl">{c.emoji}</div>
+            <h3 className="mt-1 font-semibold">{c.title}</h3>
+            <p className="mt-1 text-sm opacity-80">{c.body}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
 
 function SummaryTable({ name, m }: { name: string; m: ModelSummary }) {
   return (
@@ -73,6 +104,26 @@ export default function Performances() {
       <Nav lang={lang} setLang={setLang} />
       <h1 className="text-3xl font-bold">{tr(lang, dict.perf.title)}</h1>
       <p className="mt-2 opacity-80">{tr(lang, dict.perf.subtitle)}</p>
+
+      <StoryStrip lang={lang} />
+
+      <ChartCard title={tr(lang, dict.perf.lbChartTitle)} sub={tr(lang, dict.perf.lbChartSub)} badge="TabPFN 👑 0.8667">
+        <LbDuelChart lang={lang} />
+      </ChartCard>
+
+      <div className="grid grid-cols-1 gap-0 lg:grid-cols-2 lg:gap-4">
+        <ChartCard title={tr(lang, dict.perf.foldChartTitle)} sub={tr(lang, dict.perf.foldChartSub)}>
+          <FoldAccuracyChart lang={lang} />
+        </ChartCard>
+        <ChartCard title={tr(lang, dict.perf.timeChartTitle)} sub={tr(lang, dict.perf.timeChartSub)} badge="9.8×">
+          <TrainTimeChart lang={lang} />
+        </ChartCard>
+      </div>
+
+      <ChartCard title={tr(lang, dict.perf.metricChartTitle)} sub={tr(lang, dict.perf.metricChartSub)}>
+        <MetricRadarChart lang={lang} />
+      </ChartCard>
+
       <SummaryTable name={tr(lang, dict.common.winner)} m={showdown.winner} />
       <SummaryTable name={tr(lang, dict.common.tabpfn)} m={showdown.tabpfn} />
 

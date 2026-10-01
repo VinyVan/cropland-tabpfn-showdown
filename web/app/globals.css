@@ -8,6 +8,13 @@
   --muted: #6b7280;
   --card: #f9fafb;
   --accent: #166534;
+  --sand: #e7d8b1;
+  --sand-strong: #a16207;
+  --tabpfn: #166534;
+  --tabpfn-soft: #bbf7d0;
+  --winner: #78716c;
+  --ref: #a16207;
+  --chart-grid: #e7e5e4;
 }
 
 [data-theme="dark"] {
@@ -16,6 +23,13 @@
   --muted: #94a3b8;
   --card: #1e293b;
   --accent: #4ade80;
+  --sand: #44403c;
+  --sand-strong: #fcd34d;
+  --tabpfn: #4ade80;
+  --tabpfn-soft: #14532d;
+  --winner: #a8a29e;
+  --ref: #fcd34d;
+  --chart-grid: #334155;
 }
 
 body {
