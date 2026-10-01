@@ -2,6 +2,7 @@
 
 import { Nav, useLang, Bar } from "../../components/ui";
 import { dict, tr } from "../../lib/i18n";
+import { lbScores } from "../../lib/lb";
 import { ModelSummary, showdown } from "../../lib/showdown";
 
 function SummaryTable({ name, m }: { name: string; m: ModelSummary }) {
@@ -74,6 +75,60 @@ export default function Performances() {
       <p className="mt-2 opacity-80">{tr(lang, dict.perf.subtitle)}</p>
       <SummaryTable name={tr(lang, dict.common.winner)} m={showdown.winner} />
       <SummaryTable name={tr(lang, dict.common.tabpfn)} m={showdown.tabpfn} />
+
+      <section className="card mt-6 overflow-x-auto">
+        <h2 className="text-xl font-semibold">{tr(lang, dict.lb.title)}</h2>
+        <p className="mt-2 text-sm opacity-80">{tr(lang, dict.lb.subtitle)}</p>
+        <table className="mt-3 w-full text-sm">
+          <thead>
+            <tr className="text-left">
+              <th>{tr(lang, dict.lb.model)}</th>
+              <th className="text-right">{tr(lang, dict.lb.public)}</th>
+              <th className="text-right">{tr(lang, dict.lb.private)}</th>
+              <th>{tr(lang, dict.lb.note)}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {lbScores.ours.map((e) => (
+              <tr key={e.model} className="border-t">
+                <td className="py-1 font-mono">{e.model}</td>
+                <td className="py-1 text-right font-mono">
+                  {e.public_score.toFixed(4)}
+                </td>
+                <td className="py-1 text-right font-mono">
+                  {e.private_score.toFixed(4)}
+                </td>
+                <td className="py-1 text-xs opacity-80">{e.comment}</td>
+              </tr>
+            ))}
+            <tr className="border-t">
+              <td className="py-1 font-mono">
+                {lbScores.reference.name} (ref)
+              </td>
+              <td className="py-1 text-right font-mono">
+                {lbScores.reference.best_public_score.toFixed(4)}
+              </td>
+              <td className="py-1 text-right font-mono">
+                {lbScores.reference.best_private_score.toFixed(4)}
+              </td>
+              <td className="py-1 text-xs opacity-80">
+                {lbScores.reference.note}
+              </td>
+            </tr>
+            <tr className="border-t">
+              <td className="py-1 font-mono">before</td>
+              <td className="py-1 text-right font-mono">
+                {lbScores.user_best_before.public_score.toFixed(4)}
+              </td>
+              <td className="py-1 text-right font-mono">
+                {lbScores.user_best_before.private_score.toFixed(4)}
+              </td>
+              <td className="py-1 text-xs opacity-80">user best before</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
       <h2 className="mt-6 text-xl font-semibold">
         {tr(lang, dict.perf.recall)} — {tr(lang, dict.perf.times)}:{" "}
         {showdown.stratified_recall.winner.train_time_s_mean}s /{" "}

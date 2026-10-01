@@ -6,7 +6,7 @@
     "dev": "next dev -p 3001",
     "build": "next build",
     "start": "next start -p 3001",
-    "sync-data": "cp ../data/processed/showdown.json ./data/showdown.json"
+    "sync-data": "cp ../data/processed/showdown.json ./data/showdown.json && cp ../data/processed/lb_scores.json ./data/lb_scores.json && cp ../data/processed/map_points.csv ./data/map_points.csv && mkdir -p ./public/data && cp ../data/processed/map_points.csv ./public/data/map_points.csv && cp ../data/processed/lb_scores.json ./public/data/lb_scores.json && cp ../data/processed/showdown.json ./public/data/showdown.json"
   },
   "dependencies": {
     "next": "14.2.5",

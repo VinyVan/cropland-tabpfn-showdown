@@ -6,6 +6,7 @@ export const dict = {
     perf: { fr: "Performances", en: "Results" },
     methods: { fr: "Méthodes", en: "Methods" },
     why: { fr: "Pourquoi TabPFN", en: "Why TabPFN" },
+    map: { fr: "Carte", en: "Map" },
   },
   home: {
     title: {
@@ -77,6 +78,34 @@ export const dict = {
     inferTime: { fr: "Inférence", en: "Inference" },
     winner: { fr: "Gagnant", en: "Winner" },
     tabpfn: { fr: "TabPFN-3.5", en: "TabPFN-3.5" },
+  },
+  map: {
+    title: { fr: "Carte des prédictions", en: "Prediction map" },
+    subtitle: {
+      fr: "600 points test (Fergana + Orenburg) : prédictions des 5 modèles + accord inter-modèles. Source : web/data/map_points.csv.",
+      en: "600 test points (Fergana + Orenburg): predictions of the 5 models + inter-model agreement. Source: web/data/map_points.csv.",
+    },
+    model: { fr: "Modèle", en: "Model" },
+    agreementMode: { fr: "Accord (tous modèles)", en: "Agreement (all models)" },
+    unanimous: { fr: "Unanimes", en: "Unanimous" },
+    disputed: { fr: "Contestés", en: "Disputed" },
+    tabpfnMajority: { fr: "TabPFN == majorité", en: "TabPFN == majority" },
+    legendCrop: { fr: "Cropland (1)", en: "Cropland (1)" },
+    legendNon: { fr: "Non-cropland (0)", en: "Non-cropland (0)" },
+    legendDisputed: { fr: "Désaccord (mode accord)", en: "Disagreement (agreement mode)" },
+    loading: { fr: "Chargement de la carte…", en: "Loading map…" },
+    points: { fr: "points", en: "points" },
+  },
+  lb: {
+    title: { fr: "Leaderboard officiel Zindi (accuracy)", en: "Official Zindi leaderboard (accuracy)" },
+    subtitle: {
+      fr: "Scores publics/privés de nos 5 soumissions + référence Gozie + point de départ. Source : data/processed/lb_scores.json.",
+      en: "Public/private scores of our 5 submissions + Gozie reference + starting point. Source: data/processed/lb_scores.json.",
+    },
+    model: { fr: "Modèle", en: "Model" },
+    public: { fr: "Public", en: "Public" },
+    private: { fr: "Privé", en: "Private" },
+    note: { fr: "Note", en: "Note" },
   },
 } as const;
 

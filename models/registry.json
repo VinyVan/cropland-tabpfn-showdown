@@ -1,0 +1,82 @@
+{
+  "models": [
+    {
+      "name": "ensemble",
+      "display": {
+        "fr": "Ensemble gagnant (CatBoost + XGBoost + LightGBM)",
+        "en": "Winner ensemble (CatBoost + XGBoost + LightGBM)"
+      },
+      "kind": "live_pretrained",
+      "module": "src/winner.py",
+      "members": ["cbm", "xgb", "lgbm"],
+      "files": ["models/cbm.pkl", "models/xgb.pkl", "models/lgbm.pkl", "models/feature_order.json"],
+      "lb_public": 0.827777777,
+      "lb_private": 0.826190476,
+      "submission_id": "yDUCpvBj",
+      "comment": "winner exact repro ensemble3 (Chygos script, era env sklearn1.3.2)"
+    },
+    {
+      "name": "lgb",
+      "display": {
+        "fr": "LightGBM (gagnant, modèle seul)",
+        "en": "LightGBM (winner single)"
+      },
+      "kind": "live_pretrained",
+      "module": "src/winner.py",
+      "members": ["lgbm"],
+      "files": ["models/lgbm.pkl", "models/feature_order.json"],
+      "lb_public": 0.844444444,
+      "lb_private": 0.828571428,
+      "submission_id": "Q9UHNZrB",
+      "comment": "winner lgb3 single (his CV-best 0.8830)"
+    },
+    {
+      "name": "cat",
+      "display": {
+        "fr": "CatBoost (gagnant, modèle seul)",
+        "en": "CatBoost (winner single)"
+      },
+      "kind": "live_pretrained",
+      "module": "src/winner.py",
+      "members": ["cbm"],
+      "files": ["models/cbm.pkl", "models/feature_order.json"],
+      "lb_public": 0.816666666,
+      "lb_private": 0.838095238,
+      "submission_id": "37zUKpdY",
+      "comment": "winner cat3 single"
+    },
+    {
+      "name": "xgb",
+      "display": {
+        "fr": "XGBoost (gagnant, modèle seul)",
+        "en": "XGBoost (winner single)"
+      },
+      "kind": "live_pretrained",
+      "module": "src/winner.py",
+      "members": ["xgb"],
+      "files": ["models/xgb.pkl", "models/feature_order.json"],
+      "lb_public": 0.816666666,
+      "lb_private": 0.826190476,
+      "submission_id": "bYfhjbNa",
+      "comment": "winner xgb3 single"
+    },
+    {
+      "name": "tabpfn",
+      "display": {
+        "fr": "TabPFN-3.5 (sans tuning, sans feature engineering)",
+        "en": "TabPFN-3.5 (no tuning, no feature engineering)"
+      },
+      "kind": "live_api",
+      "module": "src/tabpfn_model.py",
+      "members": [],
+      "files": [],
+      "lb_public": 0.866666666,
+      "lb_private": 0.838095238,
+      "submission_id": "it8qu4rN",
+      "comment": "tabpfn-3.5 agg3 no-FE (same features as winner)"
+    }
+  ],
+  "aliases": {
+    "winner": "ensemble"
+  }
+}

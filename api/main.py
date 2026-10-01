@@ -2,10 +2,16 @@
 
 GET  /health   -> {"status": "ok", ...}
 GET  /metrics  -> data/processed/showdown.json
+GET  /models   -> models/registry.json entries (+ LB scores)
 GET  /sample   -> one example row (data/processed/sample_example.csv)
-POST /predict?model=winner|tabpfn  -> JSON row or CSV body -> label + proba.
-  Winner uses pretrained pkls (no retraining). TabPFN uses a lazily-trained
-  singleton (full train set, raw features) or local fallback.
+POST /predict?model=<registry-name>  -> JSON row or CSV body -> label + proba.
+  Registry-driven: any live entry in models/registry.json is served with
+  ZERO code change (add entry + files). Aliases: winner -> ensemble.
+  kind=submission_only -> 400 with clear message (still listed in /models).
+
+Live backends:
+  live_pretrained (src/winner.py): models/*.pkl, members subset of winner.
+  live_api        (src/tabpfn_model.py): lazily-trained singleton or fallback.
 """
 from __future__ import annotations
 
@@ -14,6 +20,7 @@ import json
 import threading
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 from fastapi import FastAPI, Query, Request
 from fastapi.responses import JSONResponse
@@ -25,12 +32,33 @@ ROOT = Path(__file__).resolve().parents[1]
 SHOWDOWN = ROOT / "data" / "processed" / "showdown.json"
 SAMPLE_CSV = ROOT / "data" / "processed" / "sample_example.csv"
 TRAIN_PARQUET = ROOT / "data" / "raw" / "train_feat.parquet"
+REGISTRY_PATH = ROOT / "models" / "registry.json"
 
 app = FastAPI(title="Cropland Showdown API")
 
 _winner = None
 _tabpfn = None
 _tabpfn_lock = threading.Lock()
+_registry_cache = None
+
+
+def load_registry() -> dict:
+    global _registry_cache
+    if _registry_cache is None:
+        with open(REGISTRY_PATH) as f:
+            _registry_cache = json.load(f)
+    return _registry_cache
+
+
+def resolve_model(name: str) -> tuple[str, dict | None]:
+    """Resolve alias -> (canonical_name, entry or None)."""
+    reg = load_registry()
+    aliases = reg.get("aliases", {})
+    canonical = aliases.get(name, name)
+    for e in reg.get("models", []):
+        if e.get("name") == canonical:
+            return canonical, e
+    return canonical, None
 
 
 def get_winner() -> W.PretrainedWinner:
@@ -56,6 +84,19 @@ def get_tabpfn() -> T.TabPFNModel:
     return _tabpfn
 
 
+def winner_proba_for_members(w: W.PretrainedWinner, df: pd.DataFrame,
+                             members: list[str]) -> np.ndarray:
+    """Mean proba over a subset of winner sub-models (no retraining)."""
+    if not members or set(members) == {"cbm", "xgb", "lgbm"}:
+        return w.predict_proba(df)[:, 1]
+    X = w._frame(df)
+    probas = np.mean(
+        [w.models[k].predict_proba(X)[:, 1] for k in members if k in w.models],
+        axis=0,
+    )
+    return np.asarray(probas)
+
+
 @app.get("/health")
 def health():
     return {"status": "ok", "service": "cropland-showdown"}
@@ -65,6 +106,12 @@ def health():
 def metrics():
     with open(SHOWDOWN) as f:
         return json.load(f)
+
+
+@app.get("/models")
+def list_models():
+    reg = load_registry()
+    return {"models": reg.get("models", []), "aliases": reg.get("aliases", {})}
 
 
 @app.get("/sample")
@@ -99,8 +146,20 @@ def _parse_body(body: bytes, content_type: str) -> pd.DataFrame:
 
 @app.post("/predict")
 async def predict(request: Request,
-                  model: str = Query(default="winner",
-                                     pattern="^(winner|tabpfn)$")):
+                  model: str = Query(default="winner")):
+    canonical, entry = resolve_model(model)
+    if entry is None:
+        valid = [e.get("name") for e in load_registry().get("models", [])]
+        return JSONResponse(
+            {"error": f"unknown model '{model}'. Valid: {valid} (aliases: winner->ensemble)"},
+            status_code=404,
+        )
+    kind = entry.get("kind", "")
+    if kind == "submission_only":
+        return JSONResponse(
+            {"error": f"model '{canonical}' is submission_only (LB scores only, no live inference). See GET /models."},
+            status_code=400,
+        )
     body = await request.body()
     ctype = request.headers.get("content-type", "application/json")
     try:
@@ -110,11 +169,15 @@ async def predict(request: Request,
     if df.empty:
         return JSONResponse({"error": "empty row/CSV"}, status_code=400)
 
-    if model == "winner":
+    if kind == "live_pretrained":
         w = get_winner()
-        proba = w.predict_proba(df)[:, 1]
-        labels = (proba >= 0.5).astype(int)
-    else:
+        members = entry.get("members", []) or []
+        try:
+            proba = winner_proba_for_members(w, df, members)
+        except Exception as e:
+            return JSONResponse({"error": f"winner inference failed: {e}"}, status_code=500)
+        labels = (np.asarray(proba) >= 0.5).astype(int)
+    elif kind == "live_api":
         t = get_tabpfn()
         cols = getattr(t, "feature_cols", None) or T.get_tabpfn_features(df)
         meds = getattr(t, "feature_meds", None)
@@ -128,11 +191,16 @@ async def predict(request: Request,
         else:
             X = X.fillna(0.0)
         proba = t.predict_proba(X.to_numpy(dtype=float))[:, 1]
-        labels = (proba >= 0.5).astype(int)
+        labels = (np.asarray(proba) >= 0.5).astype(int)
+    else:
+        return JSONResponse(
+            {"error": f"model '{canonical}' has unsupported kind '{kind}'"},
+            status_code=400,
+        )
 
     if len(df) == 1:
-        return {"model": model, "label": int(labels[0]),
+        return {"model": canonical, "label": int(labels[0]),
                 "proba": round(float(proba[0]), 4)}
-    return {"model": model,
+    return {"model": canonical,
             "results": [{"label": int(l), "proba": round(float(p), 4)}
                         for l, p in zip(labels, proba)]}

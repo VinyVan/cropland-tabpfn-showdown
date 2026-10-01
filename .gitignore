@@ -7,6 +7,7 @@ data/raw/*
 !data/raw/.gitkeep
 models/*
 !models/.gitkeep
+!models/registry.json
 web/node_modules/
 web/.next/
 web/*.tsbuildinfo
