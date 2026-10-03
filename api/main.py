@@ -43,7 +43,8 @@ try:  # AG-UI chatbot (optional: disabled if agent deps missing)
 
     add_langgraph_fastapi_endpoint(
         app,
-        LangGraphAgent(name=AGENT_NAME, graph=get_graph()),
+        LangGraphAgent(name=AGENT_NAME, graph=get_graph(),
+                       emit_raw_events=False),
         path="/agui",
     )
     print("[agent] AG-UI endpoint mounted at /agui")

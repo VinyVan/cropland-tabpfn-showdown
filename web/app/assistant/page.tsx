@@ -101,10 +101,22 @@ export default function AssistantPage() {
 
   const t = (fr: string, en: string) => (lang === "fr" ? fr : en);
 
-  const chips = [
-    { fr: "Prédis une parcelle avec TabPFN", en: "Predict a parcel with TabPFN" },
-    { fr: "Compare les modèles (leaderboard)", en: "Compare models (leaderboard)" },
-    { fr: "Pourquoi TabPFN est-il puissant ?", en: "Why is TabPFN powerful?" },
+  const chips: { label: string; prompt: string }[] = [
+    {
+      label: lang === "fr" ? "Prédis une parcelle avec TabPFN" : "Predict a parcel with TabPFN",
+      prompt:
+        "Predict sample parcel 0 with TabPFN using predict_parcel, then explain the verdict in one sentence.",
+    },
+    {
+      label: lang === "fr" ? "Compare les modèles (leaderboard)" : "Compare models (leaderboard)",
+      prompt:
+        "Compare winner ensemble vs TabPFN: call get_lb_scores and get_duel_stats, report official Zindi scores then local GroupKFold numbers, end with one verdict sentence.",
+    },
+    {
+      label: lang === "fr" ? "Pourquoi TabPFN est-il puissant ?" : "Why is TabPFN powerful?",
+      prompt:
+        "Why is TabPFN powerful: use get_duel_stats train times and get_lb_scores, answer in 3 short points with numbers.",
+    },
   ];
 
   async function send(text: string) {
@@ -164,11 +176,15 @@ export default function AssistantPage() {
                 }
               }
               const out = payload as Record<string, unknown>;
-              const toolName =
-                String((event.toolCallName as string) ?? "") ||
-                (out && typeof out === "object" && "model" in out
-                  ? "predict_parcel"
-                  : "result");
+              const called = String((event.toolCallName as string) ?? "");
+              let toolName = called;
+              if (!toolName && out && typeof out === "object") {
+                if ("proba" in out && "model" in out) toolName = "predict_parcel";
+                else if ("ours" in out || "submissions" in out) toolName = "get_lb_scores";
+                else if ("winner" in out && "tabpfn" in out) toolName = "get_duel_stats";
+                else if ("cropland_counts" in out) toolName = "get_map_stats";
+                else toolName = "";
+              }
               setMsgs((prev) =>
                 prev.map((m) =>
                   m.id === aiId
@@ -217,12 +233,12 @@ export default function AssistantPage() {
       <div className="mt-3 flex flex-wrap gap-2">
         {chips.map((c) => (
           <button
-            key={c.en}
+            key={c.label}
             className="card !px-3 !py-1 text-sm"
             disabled={busy}
-            onClick={() => send(lang === "fr" ? c.fr : c.en)}
+            onClick={() => send(c.prompt)}
           >
-            {lang === "fr" ? c.fr : c.en}
+            {c.label}
           </button>
         ))}
       </div>

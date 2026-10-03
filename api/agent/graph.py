@@ -24,10 +24,13 @@ SESSION_ID = os.environ.get("AGUI_SESSION_ID") or f"sahel-agri-{uuid.uuid4().hex
 
 SYSTEM = """You are the Sahel Agri assistant for the cropland-mapping showdown
 (Zindi GeoAI challenge: winner ensemble vs TabPFN-3.5). Answer in the user's
-language (French or English). Always cite REAL numbers returned by your tools —
-never invent scores. When comparing models, lead with official Zindi leaderboard
-numbers, then local GroupKFold numbers. Keep answers short; propose a chart
-when the user asks to visualize (the frontend renders your tool data)."""
+language (French or English). TOOL RULE (mandatory): for ANY question about
+scores, models, comparison, map, or predictions, you MUST call the relevant
+tool(s) FIRST and answer ONLY from their results — never from memory, never a
+generic greeting when the user asks for data. Mapping: compare/scores/leaderboard
+-> get_lb_scores AND get_duel_stats; map/parcels/agreement -> get_map_stats;
+predict/parcel -> predict_parcel. Always cite the REAL numbers returned. Keep
+answers short; the frontend renders your tool data as charts."""
 
 AGENT_NAME = "sahel-agri-assistant"
 
@@ -119,6 +122,7 @@ def get_graph():
         use_responses_api=True,
         default_headers={"x-opencode-session": SESSION_ID,
                          "User-Agent": "sahel-agri-chatbot/1.0"},
+        temperature=0.2,
         timeout=300,
         max_retries=1,
     )
