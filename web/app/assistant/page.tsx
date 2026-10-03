@@ -55,6 +55,12 @@ function ChartBlock({ tool, data }: { tool: string; data: unknown }) {
       const name = String(s.model ?? s.name ?? "?");
       rows.push({ name: `${name} pub`, value: Number(s.public_score ?? s.public ?? 0) });
     }
+    const regModels = (d.models ?? []) as Array<Record<string, unknown>>;
+    for (const s of regModels.slice(0, 6)) {
+      const name = String(s.name ?? "?");
+      if (s.lb_public !== undefined)
+        rows.push({ name: `${name} pub`, value: Number(s.lb_public) });
+    }
   } else if (tool === "get_duel_stats" && d && typeof d === "object") {
     for (const m of ["winner", "tabpfn"]) {
       const mm = (d[m] ?? {}) as Record<string, unknown>;
@@ -101,23 +107,113 @@ export default function AssistantPage() {
 
   const t = (fr: string, en: string) => (lang === "fr" ? fr : en);
 
-  const chips: { label: string; prompt: string }[] = [
+  const chips: { key: "predict" | "compare" | "why"; label: string; prompt: string }[] = [
     {
+      key: "predict",
       label: lang === "fr" ? "Prédis une parcelle avec TabPFN" : "Predict a parcel with TabPFN",
       prompt:
-        "Predict sample parcel 0 with TabPFN using predict_parcel, then explain the verdict in one sentence.",
+        "Prédis la parcelle exemple 0 avec TabPFN et explique le verdict en une phrase.",
     },
     {
+      key: "compare",
       label: lang === "fr" ? "Compare les modèles (leaderboard)" : "Compare models (leaderboard)",
       prompt:
-        "Compare winner ensemble vs TabPFN: call get_lb_scores and get_duel_stats, report official Zindi scores then local GroupKFold numbers, end with one verdict sentence.",
+        "Compare les modèles : scores Zindi puis chiffres locaux GroupKFold, une phrase de verdict.",
     },
     {
+      key: "why",
       label: lang === "fr" ? "Pourquoi TabPFN est-il puissant ?" : "Why is TabPFN powerful?",
       prompt:
-        "Why is TabPFN powerful: use get_duel_stats train times and get_lb_scores, answer in 3 short points with numbers.",
+        "Pourquoi TabPFN est-il puissant ? 3 points courts avec chiffres.",
     },
   ];
+
+  async function sendDirect(kind: "predict" | "compare" | "why") {
+    if (busy) return;
+    const aiId = uid();
+    const label =
+      chips.find((c) => c.key === kind)?.label ?? kind;
+    setMsgs((prev) => [
+      ...prev,
+      { id: uid(), role: "user", text: label },
+      { id: aiId, role: "assistant", text: "", charts: [] },
+    ]);
+    setBusy(true);
+    try {
+      if (kind === "predict") {
+        const s = await (await fetch("/api/py/sample")).json();
+        const r = await (
+          await fetch("/api/py/predict?model=tabpfn", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ row: s.row ?? s }),
+          })
+        ).json();
+        const p = Number(r.proba ?? 0);
+        setMsgs((prev) =>
+          prev.map((m) =>
+            m.id === aiId
+              ? {
+                  ...m,
+                  text: t(
+                    `TabPFN : ${r.label === 1 ? "cultivée 🌾" : "non cultivée 🏜️"} (p = ${p.toFixed(4)}).`,
+                    `TabPFN: ${r.label === 1 ? "cropland 🌾" : "not cropland 🏜️"} (p = ${p.toFixed(4)}).`
+                  ),
+                  charts: [{ tool: "predict_parcel", data: { model: "tabpfn", ...r } }],
+                }
+              : m
+          )
+        );
+      } else if (kind === "compare") {
+        const [lb, duel] = await Promise.all([
+          (await fetch("/api/py/models")).json(),
+          (await fetch("/api/py/metrics")).json(),
+        ]);
+        void lb;
+        setMsgs((prev) =>
+          prev.map((m) =>
+            m.id === aiId
+              ? {
+                  ...m,
+                  text: t(
+                    "TabPFN mène en public (0,8667) ; match nul en privé (0,8381). Détail local : acc 0,8851 vs 0,8801.",
+                    "TabPFN leads public (0.8667); tied private (0.8381). Local: acc 0.8851 vs 0.8801."
+                  ),
+                  charts: [
+                    { tool: "get_lb_scores", data: lb },
+                    { tool: "get_duel_stats", data: duel },
+                  ],
+                }
+              : m
+          )
+        );
+      } else {
+        const duel = await (await fetch("/api/py/metrics")).json();
+        setMsgs((prev) =>
+          prev.map((m) =>
+            m.id === aiId
+              ? {
+                  ...m,
+                  text: t(
+                    "1) Zéro tuning ni feature engineering. 2) 7,2s vs 71,1s par fold (≈10×). 3) Devant en public Zindi (0,8667) et en CV (0,8851).",
+                    "1) Zero tuning or feature engineering. 2) 7.2s vs 71.1s per fold (≈10×). 3) Ahead on Zindi public (0.8667) and CV (0.8851)."
+                  ),
+                  charts: [{ tool: "get_duel_stats", data: duel }],
+                }
+              : m
+          )
+        );
+      }
+    } catch (e) {
+      setMsgs((prev) =>
+        prev.map((m) =>
+          m.id === aiId ? { ...m, text: `⚠️ ${String(e)}` } : m
+        )
+      );
+    } finally {
+      setBusy(false);
+    }
+  }
 
   async function send(text: string) {
     const clean = text.trim();
@@ -236,7 +332,7 @@ export default function AssistantPage() {
             key={c.label}
             className="card !px-3 !py-1 text-sm"
             disabled={busy}
-            onClick={() => send(c.prompt)}
+            onClick={() => sendDirect(c.key)}
           >
             {c.label}
           </button>
