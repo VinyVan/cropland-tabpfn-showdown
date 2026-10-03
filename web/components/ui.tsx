@@ -50,6 +50,7 @@ export function Nav({
     { href: "/methodes", label: tr(lang, dict.nav.methods) },
     { href: "/pourquoi-tabpfn", label: tr(lang, dict.nav.why) },
     { href: "/carte", label: tr(lang, dict.nav.map) },
+    { href: "/assistant", label: tr(lang, dict.nav.assistant) },
   ];
   return (
     <header className="flex flex-wrap items-center gap-3 justify-between py-4">

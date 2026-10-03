@@ -9,6 +9,7 @@
     "sync-data": "cp ../data/processed/showdown.json ./data/showdown.json && cp ../data/processed/lb_scores.json ./data/lb_scores.json && cp ../data/processed/map_points.csv ./data/map_points.csv && mkdir -p ./public/data && cp ../data/processed/map_points.csv ./public/data/map_points.csv && cp ../data/processed/lb_scores.json ./public/data/lb_scores.json && cp ../data/processed/showdown.json ./public/data/showdown.json"
   },
   "dependencies": {
+    "@ag-ui/client": "^1.0.1",
     "next": "14.2.5",
     "react": "18.3.1",
     "react-dom": "18.3.1",

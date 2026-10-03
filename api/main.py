@@ -36,6 +36,20 @@ REGISTRY_PATH = ROOT / "models" / "registry.json"
 
 app = FastAPI(title="Cropland Showdown API")
 
+try:  # AG-UI chatbot (optional: disabled if agent deps missing)
+    from ag_ui_langgraph import LangGraphAgent, add_langgraph_fastapi_endpoint
+
+    from api.agent.graph import AGENT_NAME, get_graph
+
+    add_langgraph_fastapi_endpoint(
+        app,
+        LangGraphAgent(name=AGENT_NAME, graph=get_graph()),
+        path="/agui",
+    )
+    print("[agent] AG-UI endpoint mounted at /agui")
+except Exception as e:  # pragma: no cover - agent optional
+    print(f"[agent] disabled: {e}")
+
 _winner = None
 _tabpfn = None
 _tabpfn_lock = threading.Lock()

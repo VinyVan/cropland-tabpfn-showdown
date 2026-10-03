@@ -7,6 +7,7 @@ export const dict = {
     methods: { fr: "Méthodes", en: "Methods" },
     why: { fr: "Pourquoi TabPFN", en: "Why TabPFN" },
     map: { fr: "Carte", en: "Map" },
+    assistant: { fr: "Assistant", en: "Assistant" },
   },
   home: {
     title: {
@@ -141,6 +142,12 @@ export const dict = {
     public: { fr: "Public", en: "Public" },
     private: { fr: "Privé", en: "Private" },
     note: { fr: "Note", en: "Note" },
+  },
+  assistant: {
+    note: {
+      fr: "L'assistant cite des chiffres réels (outils) et peut afficher des graphiques.",
+      en: "The assistant cites real numbers (tools) and can render charts.",
+    },
   },
 } as const;
 

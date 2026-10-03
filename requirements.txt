@@ -9,3 +9,10 @@ xgboost==3.0.2
 fastapi
 uvicorn
 numpy==2.2.6
+langgraph
+langchain
+langchain-openai
+langchain-core
+ag-ui-langgraph
+ag-ui-protocol
+sse-starlette
