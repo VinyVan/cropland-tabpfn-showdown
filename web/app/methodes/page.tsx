@@ -21,6 +21,11 @@ export default function Methodes() {
       </section>
 
       <section className="card mt-4">
+        <h2 className="text-xl font-semibold">{tr(lang, dict.methods.simpleTitle)}</h2>
+        <p className="mt-2 text-sm leading-relaxed">{tr(lang, dict.methods.simpleBody)}</p>
+      </section>
+
+      <section className="card mt-4">
         <h2 className="text-xl font-semibold">{tr(lang, dict.methods.schemaTitle)}</h2>
         <pre className="mt-2 overflow-x-auto font-mono text-xs leading-relaxed">
 {`winner:  raw (189) ──▶ intra-fold grid aggs (+36) ──▶ 218 feats ──▶ CB+XGB+LGBM ──▶ mean proba ──▶ seuil 0.5

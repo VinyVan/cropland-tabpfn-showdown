@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-export type MapMode = "ensemble" | "lgb" | "cat" | "xgb" | "tabpfn" | "agreement";
+export type MapMode = "ensemble" | "lgb" | "cat" | "xgb" | "tabpfn" | "simple" | "agreement";
 
 interface Pt {
   ID: string;
@@ -14,6 +14,7 @@ interface Pt {
   pred_cat: number;
   pred_xgb: number;
   pred_tabpfn: number;
+  pred_simple: number;
   agreement: number;
 }
 
@@ -61,6 +62,7 @@ function parseCsv(text: string): Pt[] {
       pred_cat: Number(cells[idx("pred_cat")]),
       pred_xgb: Number(cells[idx("pred_xgb")]),
       pred_tabpfn: Number(cells[idx("pred_tabpfn")]),
+      pred_simple: Number(cells[idx("pred_simple")] ?? 0),
       agreement: Number(cells[idx("agreement")]),
     });
   }
@@ -68,6 +70,7 @@ function parseCsv(text: string): Pt[] {
 }
 
 function predFor(mode: MapMode, p: Pt): number {
+  if (mode === "simple") return p.pred_simple;
   if (mode === "lgb") return p.pred_lgb;
   if (mode === "cat") return p.pred_cat;
   if (mode === "xgb") return p.pred_xgb;

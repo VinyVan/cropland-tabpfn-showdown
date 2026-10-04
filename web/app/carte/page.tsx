@@ -11,7 +11,7 @@ const MapView = dynamic(() => import("./MapView"), {
   loading: () => <p className="mt-3 text-sm opacity-70">…</p>,
 });
 
-const MODES: MapMode[] = ["ensemble", "lgb", "cat", "xgb", "tabpfn", "agreement"];
+const MODES: MapMode[] = ["ensemble", "lgb", "cat", "xgb", "tabpfn", "simple", "agreement"];
 
 export default function Carte() {
   const [lang, setLang] = useLang();

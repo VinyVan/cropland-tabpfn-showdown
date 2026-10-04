@@ -19,6 +19,8 @@ files = {
     "xgb": REF / "submission_winner_xgb3.csv",
     "tabpfn": REF / "submission_tabpfn_agg3.csv",
 }
+AGREE5 = ["ensemble", "lgb", "cat", "xgb", "tabpfn"]  # agreement base: unchanged story
+EXTRA = {"simple": SHOW / "submissions" / "submission_simple_hgb.csv"}
 pts = coords.copy()
 for name, path in files.items():
     d = pd.read_csv(path)
@@ -27,7 +29,11 @@ for name, path in files.items():
 
 pred_cols = [f"pred_{n}" for n in files]
 assert pts[pred_cols].notna().all().all()
-pts["agreement"] = pts[pred_cols].sum(axis=1)  # 0..5 models voting cropland
+for name, path in EXTRA.items():
+    d = pd.read_csv(path)
+    pts = pts.merge(d.rename(columns={"Cropland": f"pred_{name}"}), on="ID", how="left")
+    assert pts[f"pred_{name}"].notna().all(), name
+pts["agreement"] = pts[[f"pred_{n}" for n in AGREE5]].sum(axis=1)  # 0..5, base inchangée
 pts["tabpfn_vs_majority"] = (pts["pred_tabpfn"] == (pts[pred_cols].sum(axis=1) >= 3)).astype(int)
 out = SHOW / "data/processed/map_points.csv"
 pts.to_csv(out, index=False)

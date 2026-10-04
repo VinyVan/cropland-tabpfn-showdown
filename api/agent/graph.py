@@ -97,7 +97,7 @@ def _tools():
         import pandas as pd
 
         df = pd.read_csv(MAP_CSV)
-        models = ["ensemble", "lgb", "cat", "xgb", "tabpfn"]
+        models = ["ensemble", "lgb", "cat", "xgb", "tabpfn", "simple"]
         return {
             "n_points": len(df),
             "cropland_counts": {m: int(df[f"pred_{m}"].sum()) for m in models},

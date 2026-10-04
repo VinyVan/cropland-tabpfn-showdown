@@ -92,6 +92,8 @@ export default function Home() {
         <Bar label="TabPFN — privé / private" value={0.8381} />
         <Bar label="Ensemble — public" value={0.8278} color="var(--winner, #B08945)" />
         <Bar label="Ensemble — privé / private" value={0.8262} color="var(--winner, #B08945)" />
+        <Bar label="Simple — public" value={0.8333} color="var(--sand-strong, #999)" />
+        <Bar label="Simple — privé / private" value={0.8167} color="var(--sand-strong, #999)" />
         <div className="mt-4 flex flex-wrap gap-3">
           <Link className="card !p-3 font-medium underline" href="/performances">
             {tr(lang, dict.home.cta_perf)}

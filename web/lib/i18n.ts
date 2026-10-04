@@ -110,6 +110,11 @@ export const dict = {
       en: "TabPFNClassifier via tabpfn_client (TABPFN_API_KEY), local fallback otherwise. NO added feature engineering: 182 raw numeric columns, single pass, no tuning. That is the point — performance without handcraft.",
     },
     schemaTitle: { fr: "Schéma comparatif", en: "Comparison diagram" },
+    simpleTitle: { fr: "Baseline simple (référence basse)", en: "Simple baseline (low reference)" },
+    simpleBody: {
+      fr: "HistGradientBoosting sklearn, défauts, seed 32. Mêmes features brutes que TabPFN mais SANS agrégats grid : l'étalon qui montre ce que vaut un défaut solide — et que TabPFN le bat sans artisanat.",
+      en: "Sklearn HistGradientBoosting, defaults, seed 32. Same raw features as TabPFN but WITHOUT grid aggregates: the gauge showing what a solid default is worth — and that TabPFN beats it with no handcraft.",
+    },
   },
   why: {
     title: { fr: "Pourquoi TabPFN ?", en: "Why TabPFN?" },
