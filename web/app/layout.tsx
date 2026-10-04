@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { ChatPopup } from "../components/chat-popup";
 
 export const metadata: Metadata = {
   title: "Cropland Showdown — Winner vs TabPFN-3.5",
@@ -15,6 +16,7 @@ export default function RootLayout({
     <html lang="fr" data-theme="light">
       <body>
         <main className="mx-auto max-w-4xl px-4 pb-16">{children}</main>
+        <ChatPopup />
       </body>
     </html>
   );
