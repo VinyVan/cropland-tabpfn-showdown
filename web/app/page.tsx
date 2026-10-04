@@ -1,15 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import dynamic from "next/dynamic";
 import { useState } from "react";
 import { Nav, useLang, Bar } from "../components/ui";
-import { LbDuelChart } from "../components/charts";
 import { dict, tr } from "../lib/i18n";
-import { lbScores } from "../lib/lb";
 import { showdown } from "../lib/showdown";
-
-const MapView = dynamic(() => import("./carte/MapView"), { ssr: false });
 
 export default function Home() {
   const [lang, setLang] = useLang();
@@ -47,13 +42,6 @@ export default function Home() {
     { href: "/pourquoi-tabpfn", label: tr(lang, dict.home.secWhy) },
     { href: "/carte", label: tr(lang, dict.home.secMap) },
     { href: "/assistant", label: tr(lang, dict.home.secAssistant) },
-  ];
-
-  const storyCards = [
-    { title: tr(lang, dict.perf.cardNoTuning), body: tr(lang, dict.perf.cardNoTuningBody) },
-    { title: tr(lang, dict.perf.cardNoFe), body: tr(lang, dict.perf.cardNoFeBody) },
-    { title: tr(lang, dict.perf.cardOnePass), body: tr(lang, dict.perf.cardOnePassBody) },
-    { title: tr(lang, dict.perf.cardFaster), body: tr(lang, dict.perf.cardFasterBody) },
   ];
 
   return (
@@ -96,61 +84,6 @@ export default function Home() {
           ))}
         </div>
         {result && <p className="mt-3 font-mono text-sm">{result}</p>}
-      </section>
-
-      <section className="card mt-6">
-        <h2 className="text-xl font-semibold">{tr(lang, dict.home.secResults)}</h2>
-        <p className="mt-1 text-sm opacity-80">{tr(lang, dict.home.secResultsBody)}</p>
-        <div className="mt-3"><LbDuelChart lang={lang} /></div>
-        <table className="mt-3 w-full text-sm">
-          <tbody>
-            {lbScores.ours.map((e) => (
-              <tr key={e.model} className="border-t">
-                <td className="py-1 font-mono">{e.model}</td>
-                <td className="py-1 text-right font-mono">{e.public_score.toFixed(4)}</td>
-                <td className="py-1 text-right font-mono">{e.private_score.toFixed(4)}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </section>
-
-      <section className="card mt-6">
-        <h2 className="text-xl font-semibold">{tr(lang, dict.home.secMethods)}</h2>
-        <p className="mt-1 text-sm opacity-80">{tr(lang, dict.home.secMethodsBody)}</p>
-        <h3 className="mt-3 font-semibold">{tr(lang, dict.methods.winnerTitle)}</h3>
-        <p className="mt-1 text-sm opacity-80">{tr(lang, dict.methods.winnerBody)}</p>
-        <h3 className="mt-3 font-semibold">{tr(lang, dict.methods.tabpfnTitle)}</h3>
-        <p className="mt-1 text-sm opacity-80">{tr(lang, dict.methods.tabpfnBody)}</p>
-      </section>
-
-      <section className="card mt-6">
-        <h2 className="text-xl font-semibold">{tr(lang, dict.home.secWhy)}</h2>
-        <p className="mt-1 text-sm opacity-80">{tr(lang, dict.home.secWhyBody)}</p>
-        <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
-          {storyCards.map((c) => (
-            <div key={c.title} className="card">
-              <h3 className="font-semibold">{c.title}</h3>
-              <p className="mt-1 text-sm opacity-80">{c.body}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="card mt-6">
-        <h2 className="text-xl font-semibold">{tr(lang, dict.home.secMap)}</h2>
-        <p className="mt-1 text-sm opacity-80">{tr(lang, dict.home.secMapBody)}</p>
-        <div className="mt-3" style={{ height: 380 }}>
-          <MapView mode="tabpfn" />
-        </div>
-      </section>
-
-      <section className="card mt-6">
-        <h2 className="text-xl font-semibold">{tr(lang, dict.home.secAssistant)}</h2>
-        <p className="mt-1 text-sm opacity-80">{tr(lang, dict.home.secAssistantBody)}</p>
-        <Link className="mt-2 inline-block text-sm font-medium underline" href="/assistant">
-          {tr(lang, dict.home.go)}
-        </Link>
       </section>
     </>
   );

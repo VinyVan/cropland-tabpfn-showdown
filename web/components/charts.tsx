@@ -23,6 +23,7 @@ import {
 import { Lang, dict, tr } from "../lib/i18n";
 import { lbScores } from "../lib/lb";
 import { showdown } from "../lib/showdown";
+import { simple } from "../lib/simple";
 
 const TABPFN = "var(--tabpfn)";
 const TABPFN_SOFT = "var(--tabpfn-soft)";
@@ -151,6 +152,7 @@ export function FoldAccuracyChart({ lang }: { lang: Lang }) {
     fold: `F${f.fold}`,
     winner: f.accuracy,
     tabpfn: tabpfn.folds[i]?.accuracy ?? null,
+    simple: simple.folds[i]?.accuracy ?? null,
     tabpfnTop: tabpfn.acc + tabpfn.acc_std,
     tabpfnBot: tabpfn.acc - tabpfn.acc_std,
     winnerTop: winner.acc + winner.acc_std,
@@ -221,6 +223,15 @@ export function FoldAccuracyChart({ lang }: { lang: Lang }) {
             strokeDasharray="6 3"
             dot={{ r: 4, fill: WINNER }}
           />
+          <Line
+            type="monotone"
+            dataKey="simple"
+            name={tr(lang, dict.common.simple)}
+            stroke={SAND_STRONG}
+            strokeWidth={2}
+            strokeDasharray="2 2"
+            dot={{ r: 3, fill: SAND_STRONG }}
+          />
         </ComposedChart>
       </ResponsiveContainer>
     </div>
@@ -232,6 +243,7 @@ export function TrainTimeChart({ lang }: { lang: Lang }) {
   const rows = [
     { name: tr(lang, dict.common.winner), s: showdown.winner.train_time_s_mean },
     { name: tr(lang, dict.common.tabpfn), s: showdown.tabpfn.train_time_s_mean },
+    { name: tr(lang, dict.common.simple), s: simple.train_time_s_mean },
   ];
   return (
     <div>
@@ -272,9 +284,9 @@ export function MetricRadarChart({ lang }: { lang: Lang }) {
   const { winner, tabpfn } = showdown;
   void lang;
   const data = [
-    { metric: "Accuracy", winner: winner.acc, tabpfn: tabpfn.acc },
-    { metric: "F1", winner: winner.f1, tabpfn: tabpfn.f1 },
-    { metric: "IoU", winner: winner.iou, tabpfn: tabpfn.iou },
+    { metric: "Accuracy", winner: winner.acc, tabpfn: tabpfn.acc, simple: simple.acc },
+    { metric: "F1", winner: winner.f1, tabpfn: tabpfn.f1, simple: simple.f1 },
+    { metric: "IoU", winner: winner.iou, tabpfn: tabpfn.iou, simple: simple.iou },
   ];
   return (
     <div style={{ width: "100%", height: 300 }}>
@@ -285,6 +297,7 @@ export function MetricRadarChart({ lang }: { lang: Lang }) {
           <PolarRadiusAxis domain={[0.4, 1.0]} tick={{ fill: TICK, fontSize: 10 }} tickCount={4} />
           <Radar name="TabPFN-3.5" dataKey="tabpfn" stroke={TABPFN} fill={TABPFN} fillOpacity={0.35} strokeWidth={3} dot />
           <Radar name="Winner" dataKey="winner" stroke={WINNER} fill={WINNER} fillOpacity={0.15} strokeWidth={2} strokeDasharray="6 3" dot />
+          <Radar name="Simple" dataKey="simple" stroke={SAND_STRONG} fill={SAND_STRONG} fillOpacity={0.15} strokeWidth={2} strokeDasharray="2 2" dot />
           <Legend wrapperStyle={{ fontSize: 12 }} />
           <Tooltip contentStyle={tooltipStyle} formatter={(v) => [(v as number).toFixed(4), ""]} />
         </RadarChart>

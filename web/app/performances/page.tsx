@@ -11,6 +11,7 @@ import {
 import { dict, tr } from "../../lib/i18n";
 import { lbScores } from "../../lib/lb";
 import { ModelSummary, showdown } from "../../lib/showdown";
+import { simple } from "../../lib/simple";
 
 function StoryStrip({ lang }: { lang: "fr" | "en" }) {
   const cards = [
@@ -126,6 +127,7 @@ export default function Performances() {
 
       <SummaryTable name={tr(lang, dict.common.winner)} m={showdown.winner} />
       <SummaryTable name={tr(lang, dict.common.tabpfn)} m={showdown.tabpfn} />
+      <SummaryTable name={tr(lang, dict.common.simple)} m={simple} />
 
       <section className="card mt-6 overflow-x-auto">
         <h2 className="text-xl font-semibold">{tr(lang, dict.lb.title)}</h2>
@@ -177,6 +179,7 @@ export default function Performances() {
       </p>
       <FoldTable name={tr(lang, dict.common.winner)} m={showdown.winner} lang={lang} />
       <FoldTable name={tr(lang, dict.common.tabpfn)} m={showdown.tabpfn} lang={lang} />
+      <FoldTable name={tr(lang, dict.common.simple)} m={simple} lang={lang} />
     </>
   );
 }

@@ -140,6 +140,7 @@ export const dict = {
     inferTime: { fr: "Inférence", en: "Inference" },
     winner: { fr: "Gagnant", en: "Winner" },
     tabpfn: { fr: "TabPFN-3.5", en: "TabPFN-3.5" },
+    simple: { fr: "Baseline simple", en: "Simple baseline" },
   },
   map: {
     title: { fr: "Carte des prédictions", en: "Prediction map" },
