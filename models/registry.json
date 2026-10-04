@@ -8,23 +8,37 @@
       },
       "kind": "live_pretrained",
       "module": "src/winner.py",
-      "members": ["cbm", "xgb", "lgbm"],
-      "files": ["models/cbm.pkl", "models/xgb.pkl", "models/lgbm.pkl", "models/feature_order.json"],
+      "members": [
+        "cbm",
+        "xgb",
+        "lgbm"
+      ],
+      "files": [
+        "models/cbm.pkl",
+        "models/xgb.pkl",
+        "models/lgbm.pkl",
+        "models/feature_order.json"
+      ],
       "lb_public": 0.827777777,
       "lb_private": 0.826190476,
       "submission_id": "yDUCpvBj",
-      "comment": "winner exact repro ensemble3 (Chygos script, era env sklearn1.3.2)"
+      "comment": "winner exact repro ensemble3 (exact winner-script repro, era env)"
     },
     {
       "name": "lgb",
       "display": {
-        "fr": "LightGBM (gagnant, modèle seul)",
+        "fr": "LightGBM (gagnant, mod\u00e8le seul)",
         "en": "LightGBM (winner single)"
       },
       "kind": "live_pretrained",
       "module": "src/winner.py",
-      "members": ["lgbm"],
-      "files": ["models/lgbm.pkl", "models/feature_order.json"],
+      "members": [
+        "lgbm"
+      ],
+      "files": [
+        "models/lgbm.pkl",
+        "models/feature_order.json"
+      ],
       "lb_public": 0.844444444,
       "lb_private": 0.828571428,
       "submission_id": "Q9UHNZrB",
@@ -33,13 +47,18 @@
     {
       "name": "cat",
       "display": {
-        "fr": "CatBoost (gagnant, modèle seul)",
+        "fr": "CatBoost (gagnant, mod\u00e8le seul)",
         "en": "CatBoost (winner single)"
       },
       "kind": "live_pretrained",
       "module": "src/winner.py",
-      "members": ["cbm"],
-      "files": ["models/cbm.pkl", "models/feature_order.json"],
+      "members": [
+        "cbm"
+      ],
+      "files": [
+        "models/cbm.pkl",
+        "models/feature_order.json"
+      ],
       "lb_public": 0.816666666,
       "lb_private": 0.838095238,
       "submission_id": "37zUKpdY",
@@ -48,13 +67,18 @@
     {
       "name": "xgb",
       "display": {
-        "fr": "XGBoost (gagnant, modèle seul)",
+        "fr": "XGBoost (gagnant, mod\u00e8le seul)",
         "en": "XGBoost (winner single)"
       },
       "kind": "live_pretrained",
       "module": "src/winner.py",
-      "members": ["xgb"],
-      "files": ["models/xgb.pkl", "models/feature_order.json"],
+      "members": [
+        "xgb"
+      ],
+      "files": [
+        "models/xgb.pkl",
+        "models/feature_order.json"
+      ],
       "lb_public": 0.816666666,
       "lb_private": 0.826190476,
       "submission_id": "bYfhjbNa",
@@ -74,6 +98,22 @@
       "lb_private": 0.838095238,
       "submission_id": "it8qu4rN",
       "comment": "tabpfn-3.5 agg3 no-FE (same features as winner)"
+    },
+    {
+      "name": "simple",
+      "display": {
+        "fr": "Baseline simple (sklearn, sans artisanat)",
+        "en": "Simple baseline (sklearn, no handcraft)"
+      },
+      "kind": "live_sklearn",
+      "module": "src/simple_baseline.py",
+      "files": [
+        "models/simple_hgb.pkl"
+      ],
+      "lb_public": 0.833333333,
+      "lb_private": 0.816666666,
+      "submission_id": "d8iZ7ESY",
+      "comment": "simple sklearn HGB defaults no-grid-aggs (local CV 0.8772)"
     }
   ],
   "aliases": {

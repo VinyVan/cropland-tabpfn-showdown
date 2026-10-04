@@ -37,6 +37,13 @@
       "private_score": 0.826190476,
       "public_score": 0.816666666,
       "submission_id": "bYfhjbNa"
+    },
+    {
+      "model": "simple",
+      "public_score": 0.833333333,
+      "private_score": 0.816666666,
+      "submission_id": "d8iZ7ESY",
+      "comment": "simple sklearn HGB defaults no-grid-aggs (local CV 0.8772)"
     }
   ],
   "user_best_before": {

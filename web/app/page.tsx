@@ -1,10 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { useState } from "react";
 import { Nav, useLang, Bar } from "../components/ui";
+import { LbDuelChart } from "../components/charts";
 import { dict, tr } from "../lib/i18n";
+import { lbScores } from "../lib/lb";
 import { showdown } from "../lib/showdown";
+
+const MapView = dynamic(() => import("./carte/MapView"), { ssr: false });
 
 export default function Home() {
   const [lang, setLang] = useLang();
@@ -37,10 +42,8 @@ export default function Home() {
   }
 
   const sections: { title: string; body: string; href: string }[] = [
-    { title: tr(lang, dict.home.secResults), body: tr(lang, dict.home.secResultsBody), href: "/performances" },
     { title: tr(lang, dict.home.secMethods), body: tr(lang, dict.home.secMethodsBody), href: "/methodes" },
     { title: tr(lang, dict.home.secWhy), body: tr(lang, dict.home.secWhyBody), href: "/pourquoi-tabpfn" },
-    { title: tr(lang, dict.home.secMap), body: tr(lang, dict.home.secMapBody), href: "/carte" },
     { title: tr(lang, dict.home.secAssistant), body: tr(lang, dict.home.secAssistantBody), href: "/assistant" },
   ];
 
@@ -53,8 +56,13 @@ export default function Home() {
       <section className="card mt-6">
         <h2 className="text-xl font-semibold">{tr(lang, dict.home.verdict)}</h2>
         <p className="mt-2">{tr(lang, verdict)}</p>
-        <Bar label={`${tr(lang, dict.common.winner)} — accuracy`} value={w} />
-        <Bar label={`${tr(lang, dict.common.tabpfn)} — accuracy`} value={t} />
+        <Bar label={`${tr(lang, dict.common.winner)} — accuracy (CV)`} value={w} />
+        <Bar label={`${tr(lang, dict.common.tabpfn)} — accuracy (CV)`} value={t} />
+        <h3 className="mt-4 font-semibold">{tr(lang, dict.lb.title)}</h3>
+        <Bar label="TabPFN — public" value={0.8667} />
+        <Bar label="TabPFN — privé / private" value={0.8381} />
+        <Bar label="Ensemble — public" value={0.8278} />
+        <Bar label="Ensemble — privé / private" value={0.8262} />
         <div className="mt-4 flex gap-3">
           <Link className="card !p-3 font-medium underline" href="/performances">
             {tr(lang, dict.home.cta_perf)}
@@ -63,6 +71,26 @@ export default function Home() {
             {tr(lang, dict.home.cta_methods)}
           </Link>
         </div>
+      </section>
+
+      <section className="card mt-6">
+        <h2 className="text-xl font-semibold">{tr(lang, dict.home.secResults)}</h2>
+        <p className="mt-1 text-sm opacity-80">{tr(lang, dict.home.secResultsBody)}</p>
+        <div className="mt-3"><LbDuelChart lang={lang} /></div>
+        <table className="mt-3 w-full text-sm">
+          <tbody>
+            {lbScores.ours.map((e) => (
+              <tr key={e.model} className="border-t">
+                <td className="py-1 font-mono">{e.model}</td>
+                <td className="py-1 text-right font-mono">{e.public_score.toFixed(4)}</td>
+                <td className="py-1 text-right font-mono">{e.private_score.toFixed(4)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <Link className="mt-2 inline-block text-sm font-medium underline" href="/performances">
+          {tr(lang, dict.home.go)}
+        </Link>
       </section>
 
       <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -76,6 +104,17 @@ export default function Home() {
           </section>
         ))}
       </div>
+
+      <section className="card mt-6">
+        <h2 className="text-xl font-semibold">{tr(lang, dict.home.secMap)}</h2>
+        <p className="mt-1 text-sm opacity-80">{tr(lang, dict.home.secMapBody)}</p>
+        <div className="mt-3" style={{ height: 380 }}>
+          <MapView mode="tabpfn" />
+        </div>
+        <Link className="mt-2 inline-block text-sm font-medium underline" href="/carte">
+          {tr(lang, dict.home.go)}
+        </Link>
+      </section>
 
       <section className="card mt-6">
         <h2 className="text-xl font-semibold">{tr(lang, dict.home.demo)}</h2>

@@ -192,6 +192,15 @@ async def predict(request: Request,
         except Exception as e:
             return JSONResponse({"error": f"winner inference failed: {e}"}, status_code=500)
         labels = (np.asarray(proba) >= 0.5).astype(int)
+    elif kind == "live_sklearn":
+        from src import simple_baseline as S
+
+        try:
+            sp = S.load_pretrained(ROOT / "models")
+            proba = sp.predict_proba(df)[:, 1]
+        except Exception as e:
+            return JSONResponse({"error": f"simple inference failed: {e}"}, status_code=500)
+        labels = (np.asarray(proba) >= 0.5).astype(int)
     elif kind == "live_api":
         t = get_tabpfn()
         cols = getattr(t, "feature_cols", None) or T.get_tabpfn_features(df)
