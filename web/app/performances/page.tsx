@@ -8,12 +8,12 @@ import {
   MetricRadarChart,
   TrainTimeChart,
 } from "../../components/charts";
-import { dict, tr } from "../../lib/i18n";
+import { Lang, dict, tr } from "../../lib/i18n";
 import { lbScores } from "../../lib/lb";
 import { ModelSummary, showdown } from "../../lib/showdown";
 import { simple } from "../../lib/simple";
 
-function StoryStrip({ lang }: { lang: "fr" | "en" }) {
+function StoryStrip({ lang }: { lang: Lang }) {
   const cards = [
     { emoji: "🔧", title: tr(lang, dict.perf.cardNoTuning), body: tr(lang, dict.perf.cardNoTuningBody) },
     { emoji: "🧱", title: tr(lang, dict.perf.cardNoFe), body: tr(lang, dict.perf.cardNoFeBody) },
@@ -64,7 +64,7 @@ function SummaryTable({ name, m }: { name: string; m: ModelSummary }) {
   );
 }
 
-function FoldTable({ name, m, lang }: { name: string; m: ModelSummary; lang: "fr" | "en" }) {
+function FoldTable({ name, m, lang }: { name: string; m: ModelSummary; lang: Lang }) {
   return (
     <div className="card mt-4 overflow-x-auto">
       <h3 className="font-semibold">

@@ -2,6 +2,8 @@
 
 import { useRef, useState } from "react";
 import { HttpAgent } from "@ag-ui/client";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import {
   Bar,
   BarChart,
@@ -105,24 +107,40 @@ export default function AssistantPage() {
   const threadRef = useRef<string>(uid());
   const agentRef = useRef<HttpAgent | null>(null);
 
-  const t = (fr: string, en: string) => (lang === "fr" ? fr : en);
+  const t = (fr: string, en: string, de: string) =>
+    lang === "fr" ? fr : lang === "de" ? de : en;
 
   const chips: { key: "predict" | "compare" | "why"; label: string; prompt: string }[] = [
     {
       key: "predict",
-      label: lang === "fr" ? "Prédis une parcelle avec TabPFN" : "Predict a parcel with TabPFN",
+      label:
+        lang === "fr"
+          ? "Prédis une parcelle avec TabPFN"
+          : lang === "de"
+            ? "Parzelle mit TabPFN vorhersagen"
+            : "Predict a parcel with TabPFN",
       prompt:
         "Prédis la parcelle exemple 0 avec TabPFN et explique le verdict en une phrase.",
     },
     {
       key: "compare",
-      label: lang === "fr" ? "Compare les modèles (leaderboard)" : "Compare models (leaderboard)",
+      label:
+        lang === "fr"
+          ? "Compare les modèles (leaderboard)"
+          : lang === "de"
+            ? "Modelle vergleichen (Leaderboard)"
+            : "Compare models (leaderboard)",
       prompt:
         "Compare les modèles : scores Zindi puis chiffres locaux GroupKFold, une phrase de verdict.",
     },
     {
       key: "why",
-      label: lang === "fr" ? "Pourquoi TabPFN est-il puissant ?" : "Why is TabPFN powerful?",
+      label:
+        lang === "fr"
+          ? "Pourquoi TabPFN est-il puissant ?"
+          : lang === "de"
+            ? "Warum ist TabPFN leistungsstark?"
+            : "Why is TabPFN powerful?",
       prompt:
         "Pourquoi TabPFN est-il puissant ? 3 points courts avec chiffres.",
     },
@@ -157,7 +175,8 @@ export default function AssistantPage() {
                   ...m,
                   text: t(
                     `TabPFN : ${r.label === 1 ? "cultivée 🌾" : "non cultivée 🏜️"} (p = ${p.toFixed(4)}).`,
-                    `TabPFN: ${r.label === 1 ? "cropland 🌾" : "not cropland 🏜️"} (p = ${p.toFixed(4)}).`
+                    `TabPFN: ${r.label === 1 ? "cropland 🌾" : "not cropland 🏜️"} (p = ${p.toFixed(4)}).`,
+                    `TabPFN: ${r.label === 1 ? "Cropland 🌾" : "Nicht-Cropland 🏜️"} (p = ${p.toFixed(4)}).`
                   ),
                   charts: [{ tool: "predict_parcel", data: { model: "tabpfn", ...r } }],
                 }
@@ -177,7 +196,8 @@ export default function AssistantPage() {
                   ...m,
                   text: t(
                     "TabPFN mène en public (0,8667) ; match nul en privé (0,8381). Détail local : acc 0,8851 vs 0,8801.",
-                    "TabPFN leads public (0.8667); tied private (0.8381). Local: acc 0.8851 vs 0.8801."
+                    "TabPFN leads public (0.8667); tied private (0.8381). Local: acc 0.8851 vs 0.8801.",
+                    "TabPFN führt public (0,8667); private geteilt (0,8381). Lokal: Acc 0,8851 vs 0,8801."
                   ),
                   charts: [
                     { tool: "get_lb_scores", data: lb },
@@ -196,7 +216,8 @@ export default function AssistantPage() {
                   ...m,
                   text: t(
                     "1) Zéro tuning ni feature engineering. 2) 7,2s vs 71,1s par fold (≈10×). 3) Devant en public Zindi (0,8667) et en CV (0,8851).",
-                    "1) Zero tuning or feature engineering. 2) 7.2s vs 71.1s per fold (≈10×). 3) Ahead on Zindi public (0.8667) and CV (0.8851)."
+                    "1) Zero tuning or feature engineering. 2) 7.2s vs 71.1s per fold (≈10×). 3) Ahead on Zindi public (0.8667) and CV (0.8851).",
+                    "1) Null Tuning, null Feature-Engineering. 2) 7,2 s vs 71,1 s pro Fold (≈10×). 3) Vorn bei Zindi-Public (0,8667) und CV (0,8851)."
                   ),
                   charts: [{ tool: "get_duel_stats", data: duel }],
                 }
@@ -229,7 +250,7 @@ export default function AssistantPage() {
     const aguiMessages = history.map((m) => ({
       id: m.id,
       role: m.role,
-      content: m.text,
+      content: m.role === "user" ? `[lang=${lang}] ${m.text}` : m.text,
     }));
     try {
       await agent.runAgent(
@@ -318,12 +339,13 @@ export default function AssistantPage() {
     <main className="mx-auto max-w-3xl px-4 pb-16">
       <Nav lang={lang} setLang={setLang} />
       <h1 className="mt-2 text-2xl font-bold">
-        {t("Assistant Agri 🤖", "Agri assistant 🤖")}
+        {t("Assistant Agri 🤖", "Agri assistant 🤖", "Agri-Assistent 🤖")}
       </h1>
       <p className="mt-1 text-sm opacity-80">
         {t(
           "Propulsé par muse-spark-1.3-contributor (LangGraph + AG-UI). Prédictions, explications, graphiques.",
-          "Powered by muse-spark-1.3-contributor (LangGraph + AG-UI). Predictions, explanations, charts."
+          "Powered by muse-spark-1.3-contributor (LangGraph + AG-UI). Predictions, explanations, charts.",
+          "Mit muse-spark-1.3-contributor (LangGraph + AG-UI). Vorhersagen, Erklärungen, Diagramme."
         )}
       </p>
       <div className="mt-3 flex flex-wrap gap-2">
@@ -346,8 +368,12 @@ export default function AssistantPage() {
                 m.role === "user" ? "bg-black/10" : "card w-full"
               }`}
             >
-              <div className="whitespace-pre-wrap">
-                {m.text || (m.role === "assistant" ? "…" : "")}
+              <div className="whitespace-pre-wrap prose-sm">
+                {m.role === "assistant" ? (
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{m.text || "…"}</ReactMarkdown>
+                ) : (
+                  m.text
+                )}
               </div>
               {m.pendingTool && (
                 <div className="mt-1 text-xs opacity-60">🔧 {m.pendingTool}…</div>
@@ -371,10 +397,10 @@ export default function AssistantPage() {
           value={input}
           disabled={busy}
           onChange={(e) => setInput(e.target.value)}
-          placeholder={t("Posez votre question…", "Ask your question…")}
+          placeholder={t("Posez votre question…", "Ask your question…", "Stellen Sie Ihre Frage…")}
         />
         <button className="card !px-4 !py-2 text-sm font-semibold" disabled={busy} type="submit">
-          {busy ? "…" : t("Envoyer", "Send")}
+          {busy ? "…" : t("Envoyer", "Send", "Senden")}
         </button>
       </form>
       <p className="mt-2 text-xs opacity-60">{tr(lang, dict.assistant.note)}</p>

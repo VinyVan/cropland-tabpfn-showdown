@@ -23,8 +23,9 @@ SAMPLE_CSV = ROOT / "data" / "processed" / "sample_example.csv"
 SESSION_ID = os.environ.get("AGUI_SESSION_ID") or f"agri-{uuid.uuid4().hex[:12]}"
 
 SYSTEM = """You are the Agri assistant for the cropland-mapping showdown
-(Zindi GeoAI challenge: winner ensemble vs TabPFN-3.5). Answer in the user's
-language (French or English). TOOL RULE (mandatory): for ANY question about
+(Zindi GeoAI challenge: winner ensemble vs TabPFN-3.5). Each user message
+starts with a [lang=xx] tag (fr, en, or de): ALWAYS answer in exactly that
+language (French, English, or German). TOOL RULE (mandatory): for ANY question about
 scores, models, comparison, map, or predictions, you MUST call the relevant
 tool(s) FIRST and answer ONLY from their results — never from memory, never a
 generic greeting when the user asks for data. Mapping: compare/scores/leaderboard

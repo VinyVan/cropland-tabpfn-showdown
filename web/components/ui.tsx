@@ -9,7 +9,7 @@ export function useLang(): [Lang, (l: Lang) => void] {
   const [lang, setLang] = useState<Lang>("fr");
   useEffect(() => {
     const saved = window.localStorage.getItem("lang");
-    if (saved === "fr" || saved === "en") setLang(saved);
+    if (saved === "fr" || saved === "en" || saved === "de") setLang(saved);
   }, []);
   const set = (l: Lang) => {
     setLang(l);
@@ -68,10 +68,10 @@ export function Nav({
       <div className="flex gap-2">
         <button
           className="card !p-2 text-sm"
-          onClick={() => setLang(lang === "fr" ? "en" : "fr")}
+          onClick={() => setLang(lang === "fr" ? "en" : lang === "en" ? "de" : "fr")}
           aria-label="language"
         >
-          {lang === "fr" ? "EN" : "FR"}
+          {lang === "fr" ? "EN" : lang === "en" ? "DE" : "FR"}
         </button>
         <button
           className="card !p-2 text-sm"

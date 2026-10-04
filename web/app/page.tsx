@@ -30,8 +30,8 @@ export default function Home() {
   const t = showdown.tabpfn.acc;
   const verdict =
     t > w
-      ? { fr: `TabPFN-3.5 passe devant (${t} vs ${w} accuracy) — sans tuning ni feature engineering.`, en: `TabPFN-3.5 leads (${t} vs ${w} accuracy) — no tuning, no feature engineering.` }
-      : { fr: `Le gagnant garde la tête (${w} vs ${t} accuracy) — TabPFN reste au contact sans tuning.`, en: `The winner stays ahead (${w} vs ${t} accuracy) — TabPFN stays close with no tuning.` };
+      ? { fr: `TabPFN-3.5 passe devant (${t} vs ${w} accuracy) — sans tuning ni feature engineering.`, en: `TabPFN-3.5 leads (${t} vs ${w} accuracy) — no tuning, no feature engineering.`, de: `TabPFN-3.5 liegt vorn (${t} vs ${w} Accuracy) — ohne Tuning, ohne Feature-Engineering.` }
+      : { fr: `Le gagnant garde la tête (${w} vs ${t} accuracy) — TabPFN reste au contact sans tuning.`, en: `The winner stays ahead (${w} vs ${t} accuracy) — TabPFN stays close with no tuning.`, de: `Der Sieger bleibt vorn (${w} vs ${t} Accuracy) — TabPFN bleibt ohne Tuning dran.` };
 
   async function demoPredict(model: "winner" | "tabpfn" | "simple") {
     setLoading(model);
@@ -108,7 +108,7 @@ export default function Home() {
         <h2 className="text-xl font-semibold">{tr(lang, dict.home.demo)}</h2>
         <div className="mt-3 flex flex-wrap items-center gap-3">
           <button className="card !p-3 text-sm underline" onClick={loadSamples}>
-            🔀 {tr(lang, { fr: "Exemples", en: "Samples" } as never) as string}
+            🔀 {tr(lang, { fr: "Exemples", en: "Samples", de: "Beispiele" })}
           </button>
           {samples.length > 0 && (
             <select
