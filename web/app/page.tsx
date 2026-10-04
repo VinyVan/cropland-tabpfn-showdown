@@ -41,10 +41,19 @@ export default function Home() {
     }
   }
 
-  const sections: { title: string; body: string; href: string }[] = [
-    { title: tr(lang, dict.home.secMethods), body: tr(lang, dict.home.secMethodsBody), href: "/methodes" },
-    { title: tr(lang, dict.home.secWhy), body: tr(lang, dict.home.secWhyBody), href: "/pourquoi-tabpfn" },
-    { title: tr(lang, dict.home.secAssistant), body: tr(lang, dict.home.secAssistantBody), href: "/assistant" },
+  const allLinks = [
+    { href: "/performances", label: tr(lang, dict.home.cta_perf) },
+    { href: "/methodes", label: tr(lang, dict.home.cta_methods) },
+    { href: "/pourquoi-tabpfn", label: tr(lang, dict.home.secWhy) },
+    { href: "/carte", label: tr(lang, dict.home.secMap) },
+    { href: "/assistant", label: tr(lang, dict.home.secAssistant) },
+  ];
+
+  const storyCards = [
+    { title: tr(lang, dict.perf.cardNoTuning), body: tr(lang, dict.perf.cardNoTuningBody) },
+    { title: tr(lang, dict.perf.cardNoFe), body: tr(lang, dict.perf.cardNoFeBody) },
+    { title: tr(lang, dict.perf.cardOnePass), body: tr(lang, dict.perf.cardOnePassBody) },
+    { title: tr(lang, dict.perf.cardFaster), body: tr(lang, dict.perf.cardFasterBody) },
   ];
 
   return (
@@ -63,57 +72,13 @@ export default function Home() {
         <Bar label="TabPFN — privé / private" value={0.8381} />
         <Bar label="Ensemble — public" value={0.8278} />
         <Bar label="Ensemble — privé / private" value={0.8262} />
-        <div className="mt-4 flex gap-3">
-          <Link className="card !p-3 font-medium underline" href="/performances">
-            {tr(lang, dict.home.cta_perf)}
-          </Link>
-          <Link className="card !p-3 font-medium underline" href="/methodes">
-            {tr(lang, dict.home.cta_methods)}
-          </Link>
-        </div>
-      </section>
-
-      <section className="card mt-6">
-        <h2 className="text-xl font-semibold">{tr(lang, dict.home.secResults)}</h2>
-        <p className="mt-1 text-sm opacity-80">{tr(lang, dict.home.secResultsBody)}</p>
-        <div className="mt-3"><LbDuelChart lang={lang} /></div>
-        <table className="mt-3 w-full text-sm">
-          <tbody>
-            {lbScores.ours.map((e) => (
-              <tr key={e.model} className="border-t">
-                <td className="py-1 font-mono">{e.model}</td>
-                <td className="py-1 text-right font-mono">{e.public_score.toFixed(4)}</td>
-                <td className="py-1 text-right font-mono">{e.private_score.toFixed(4)}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <Link className="mt-2 inline-block text-sm font-medium underline" href="/performances">
-          {tr(lang, dict.home.go)}
-        </Link>
-      </section>
-
-      <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-        {sections.map((s) => (
-          <section key={s.href} className="card">
-            <h2 className="text-lg font-semibold">{s.title}</h2>
-            <p className="mt-1 text-sm opacity-80">{s.body}</p>
-            <Link className="mt-2 inline-block text-sm font-medium underline" href={s.href}>
-              {tr(lang, dict.home.go)}
+        <div className="mt-4 flex flex-wrap gap-3">
+          {allLinks.map((l) => (
+            <Link key={l.href} className="card !p-3 font-medium underline" href={l.href}>
+              {l.label}
             </Link>
-          </section>
-        ))}
-      </div>
-
-      <section className="card mt-6">
-        <h2 className="text-xl font-semibold">{tr(lang, dict.home.secMap)}</h2>
-        <p className="mt-1 text-sm opacity-80">{tr(lang, dict.home.secMapBody)}</p>
-        <div className="mt-3" style={{ height: 380 }}>
-          <MapView mode="tabpfn" />
+          ))}
         </div>
-        <Link className="mt-2 inline-block text-sm font-medium underline" href="/carte">
-          {tr(lang, dict.home.go)}
-        </Link>
       </section>
 
       <section className="card mt-6">
@@ -131,6 +96,61 @@ export default function Home() {
           ))}
         </div>
         {result && <p className="mt-3 font-mono text-sm">{result}</p>}
+      </section>
+
+      <section className="card mt-6">
+        <h2 className="text-xl font-semibold">{tr(lang, dict.home.secResults)}</h2>
+        <p className="mt-1 text-sm opacity-80">{tr(lang, dict.home.secResultsBody)}</p>
+        <div className="mt-3"><LbDuelChart lang={lang} /></div>
+        <table className="mt-3 w-full text-sm">
+          <tbody>
+            {lbScores.ours.map((e) => (
+              <tr key={e.model} className="border-t">
+                <td className="py-1 font-mono">{e.model}</td>
+                <td className="py-1 text-right font-mono">{e.public_score.toFixed(4)}</td>
+                <td className="py-1 text-right font-mono">{e.private_score.toFixed(4)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+
+      <section className="card mt-6">
+        <h2 className="text-xl font-semibold">{tr(lang, dict.home.secMethods)}</h2>
+        <p className="mt-1 text-sm opacity-80">{tr(lang, dict.home.secMethodsBody)}</p>
+        <h3 className="mt-3 font-semibold">{tr(lang, dict.methods.winnerTitle)}</h3>
+        <p className="mt-1 text-sm opacity-80">{tr(lang, dict.methods.winnerBody)}</p>
+        <h3 className="mt-3 font-semibold">{tr(lang, dict.methods.tabpfnTitle)}</h3>
+        <p className="mt-1 text-sm opacity-80">{tr(lang, dict.methods.tabpfnBody)}</p>
+      </section>
+
+      <section className="card mt-6">
+        <h2 className="text-xl font-semibold">{tr(lang, dict.home.secWhy)}</h2>
+        <p className="mt-1 text-sm opacity-80">{tr(lang, dict.home.secWhyBody)}</p>
+        <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {storyCards.map((c) => (
+            <div key={c.title} className="card">
+              <h3 className="font-semibold">{c.title}</h3>
+              <p className="mt-1 text-sm opacity-80">{c.body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="card mt-6">
+        <h2 className="text-xl font-semibold">{tr(lang, dict.home.secMap)}</h2>
+        <p className="mt-1 text-sm opacity-80">{tr(lang, dict.home.secMapBody)}</p>
+        <div className="mt-3" style={{ height: 380 }}>
+          <MapView mode="tabpfn" />
+        </div>
+      </section>
+
+      <section className="card mt-6">
+        <h2 className="text-xl font-semibold">{tr(lang, dict.home.secAssistant)}</h2>
+        <p className="mt-1 text-sm opacity-80">{tr(lang, dict.home.secAssistantBody)}</p>
+        <Link className="mt-2 inline-block text-sm font-medium underline" href="/assistant">
+          {tr(lang, dict.home.go)}
+        </Link>
       </section>
     </>
   );
