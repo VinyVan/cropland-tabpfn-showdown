@@ -24,6 +24,32 @@ export const dict = {
     demo: { fr: "Essayez une prédiction", en: "Try a prediction" },
     model: { fr: "Modèle", en: "Model" },
     predict: { fr: "Prédire (exemple)", en: "Predict (sample)" },
+    secResults: { fr: "Résultats officiels", en: "Official results" },
+    secResultsBody: {
+      fr: "5 soumissions Zindi reproductibles. TabPFN meilleur public (0,8667), match nul en privé (0,8381).",
+      en: "5 reproducible Zindi submissions. TabPFN best public (0.8667), tied private (0.8381).",
+    },
+    secMethods: { fr: "Méthodes", en: "Methods" },
+    secMethodsBody: {
+      fr: "Ensemble CatBoost+XGBoost+LightGBM (1000 arbres, seed 32) contre TabPFN-3.5 sans tuning ni feature engineering.",
+      en: "CatBoost+XGBoost+LightGBM ensemble (1000 trees, seed 32) vs TabPFN-3.5 with no tuning or feature engineering.",
+    },
+    secWhy: { fr: "Pourquoi TabPFN", en: "Why TabPFN" },
+    secWhyBody: {
+      fr: "7,2 s vs 71,1 s par fold (≈10× plus rapide), zéro artisanat, devant en public et en CV.",
+      en: "7.2s vs 71.1s per fold (≈10× faster), zero handcraft, ahead on public LB and CV.",
+    },
+    secMap: { fr: "Carte : 600 parcelles", en: "Map: 600 parcels" },
+    secMapBody: {
+      fr: "544 prédictions unanimes, 56 contestées. TabPFN d'accord avec la majorité à 94,8 %.",
+      en: "544 unanimous predictions, 56 disputed. TabPFN agrees with majority 94.8%.",
+    },
+    secAssistant: { fr: "Assistant Agri", en: "Agri assistant" },
+    secAssistantBody: {
+      fr: "Posez vos questions : prédictions live, chiffres réels, graphiques instantanés.",
+      en: "Ask anything: live predictions, real numbers, instant charts.",
+    },
+    go: { fr: "Ouvrir →", en: "Open →" },
   },
   perf: {
     title: { fr: "Performances", en: "Results" },

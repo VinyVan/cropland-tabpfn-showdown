@@ -36,6 +36,14 @@ export default function Home() {
     }
   }
 
+  const sections: { title: string; body: string; href: string }[] = [
+    { title: tr(lang, dict.home.secResults), body: tr(lang, dict.home.secResultsBody), href: "/performances" },
+    { title: tr(lang, dict.home.secMethods), body: tr(lang, dict.home.secMethodsBody), href: "/methodes" },
+    { title: tr(lang, dict.home.secWhy), body: tr(lang, dict.home.secWhyBody), href: "/pourquoi-tabpfn" },
+    { title: tr(lang, dict.home.secMap), body: tr(lang, dict.home.secMapBody), href: "/carte" },
+    { title: tr(lang, dict.home.secAssistant), body: tr(lang, dict.home.secAssistantBody), href: "/assistant" },
+  ];
+
   return (
     <>
       <Nav lang={lang} setLang={setLang} />
@@ -56,6 +64,18 @@ export default function Home() {
           </Link>
         </div>
       </section>
+
+      <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+        {sections.map((s) => (
+          <section key={s.href} className="card">
+            <h2 className="text-lg font-semibold">{s.title}</h2>
+            <p className="mt-1 text-sm opacity-80">{s.body}</p>
+            <Link className="mt-2 inline-block text-sm font-medium underline" href={s.href}>
+              {tr(lang, dict.home.go)}
+            </Link>
+          </section>
+        ))}
+      </div>
 
       <section className="card mt-6">
         <h2 className="text-xl font-semibold">{tr(lang, dict.home.demo)}</h2>
