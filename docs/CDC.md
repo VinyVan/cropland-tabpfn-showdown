@@ -2,7 +2,7 @@
 
 ## Idée
 Rejouer le challenge Zindi `GeoAI Challenge for Cropland Mapping in Dry Environments` exactement :
-le pipeline du gagnant (1ère place, ré-implémenté dans `cropland-mapping`, base Chigozie Nkwocha)
+le pipeline reproduit depuis le repo de la solution 1ère place (nos soumissions en découlent directement)
 contre TabPFN-3.5, même protocole, comparatif chiffré, vraie web app qui raconte performances + méthodes + pourquoi TabPFN.
 
 ## Références gagnant (ne pas réinventer, réutiliser)
@@ -20,4 +20,4 @@ contre TabPFN-3.5, même protocole, comparatif chiffré, vraie web app qui racon
 6. Repo soumettable : README 5-min, `requirements.txt`, démo, `docs/` comme brief.
 
 ## Hors scope V1
-Pas de nouvelle feature engineering, pas de tuning TabPFN, pas de soumission Zindi (challenge terminé).
+Pas de nouvelle feature engineering, pas de tuning TabPFN. Soumissions Zindi : 5 effectuées et scorées (voir data/processed/lb_scores.json).

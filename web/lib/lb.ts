@@ -11,7 +11,7 @@ export interface LbScores {
   challenge_url: string;
   metric: string;
   ours: LbEntry[];
-  reference: {
+  reference?: {
     name: string;
     best_public_score: number;
     best_private_score: number;

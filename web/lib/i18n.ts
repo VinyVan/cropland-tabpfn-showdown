@@ -50,8 +50,8 @@ export const dict = {
     cardFasterBody: { fr: "7,2 s vs 71,1 s par fold en moyenne (GroupKFold-5).", en: "7.2 s vs 71.1 s per fold on average (GroupKFold-5)." },
     lbChartTitle: { fr: "Duel leaderboard Zindi (accuracy)", en: "Zindi leaderboard duel (accuracy)" },
     lbChartSub: {
-      fr: "Nos 5 soumissions + référence Gozie. TabPFN 👑 meilleur public (0,8667).",
-      en: "Our 5 submissions + Gozie reference. TabPFN 👑 best public (0.8667).",
+      fr: "Nos 5 soumissions reproductibles. TabPFN 👑 meilleur public (0,8667).",
+      en: "Our 5 reproducible submissions. TabPFN 👑 best public (0.8667).",
     },
     crownNote: { fr: "👑 TabPFN meilleur score public — 0,8667", en: "👑 TabPFN best public score — 0.8667" },
     foldChartTitle: { fr: "Accuracy fold par fold (GroupKFold-5, grid_id)", en: "Fold-by-fold accuracy (GroupKFold-5, grid_id)" },
@@ -104,8 +104,8 @@ export const dict = {
     },
     limits: { fr: "Limites honnêtes", en: "Honest limits" },
     limitsBody: {
-      fr: "Dépendance à l'API (quota, réseau) avec fallback local moins performant ; transfert inter-régions Fergana↔Orenburg non évalué en V1 — les deux modèles peuvent y chuter ; pas de tuning TabPFN tenté, pas de soumission Zindi (challenge terminé).",
-      en: "API dependency (quota, network) with a weaker local fallback; Fergana↔Orenburg inter-region transfer not evaluated in V1 — both models may drop there; no TabPFN tuning attempted, no Zindi submission (challenge over).",
+      fr: "Dépendance à l'API (quota, réseau) avec fallback local moins performant ; transfert inter-régions Fergana↔Orenburg non évalué en V1 — les deux modèles peuvent y chuter ; pas de tuning TabPFN tenté ; 5 soumissions Zindi effectuées et scorées (voir Performances).",
+      en: "API dependency (quota, network) with a weaker local fallback; Fergana↔Orenburg inter-region transfer not evaluated in V1 — both models may drop there; no TabPFN tuning attempted; 5 Zindi submissions made and scored (see Results).",
     },
   },
   common: {
@@ -135,8 +135,8 @@ export const dict = {
   lb: {
     title: { fr: "Leaderboard officiel Zindi (accuracy)", en: "Official Zindi leaderboard (accuracy)" },
     subtitle: {
-      fr: "Scores publics/privés de nos 5 soumissions + référence Gozie + point de départ. Source : data/processed/lb_scores.json.",
-      en: "Public/private scores of our 5 submissions + Gozie reference + starting point. Source: data/processed/lb_scores.json.",
+      fr: "Scores publics/privés de nos 5 soumissions reproductibles + point de départ. Source : data/processed/lb_scores.json.",
+      en: "Public/private scores of our 5 reproducible submissions + starting point. Source: data/processed/lb_scores.json.",
     },
     model: { fr: "Modèle", en: "Model" },
     public: { fr: "Public", en: "Public" },

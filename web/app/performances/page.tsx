@@ -153,20 +153,6 @@ export default function Performances() {
               </tr>
             ))}
             <tr className="border-t">
-              <td className="py-1 font-mono">
-                {lbScores.reference.name} (ref)
-              </td>
-              <td className="py-1 text-right font-mono">
-                {lbScores.reference.best_public_score.toFixed(4)}
-              </td>
-              <td className="py-1 text-right font-mono">
-                {lbScores.reference.best_private_score.toFixed(4)}
-              </td>
-              <td className="py-1 text-xs opacity-80">
-                {lbScores.reference.note}
-              </td>
-            </tr>
-            <tr className="border-t">
               <td className="py-1 font-mono">before</td>
               <td className="py-1 text-right font-mono">
                 {lbScores.user_best_before.public_score.toFixed(4)}

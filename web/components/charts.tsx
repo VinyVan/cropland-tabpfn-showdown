@@ -75,7 +75,7 @@ function shortModel(model: string): string {
   return model.toUpperCase();
 }
 
-/** (1) LB duel grouped-bar: ours 5 + Gozie ref, public + private. */
+/** (1) LB duel grouped-bar: our 5 reproducible submissions, public + private. */
 export function LbDuelChart({ lang }: { lang: Lang }) {
   const rows = [
     ...lbScores.ours.map((e) => ({
@@ -85,13 +85,6 @@ export function LbDuelChart({ lang }: { lang: Lang }) {
       isTabpfn: e.model === "tabpfn",
       isRef: false,
     })),
-    {
-      name: lang === "fr" ? "Gozie (réf)" : "Gozie (ref)",
-      public: lbScores.reference.best_public_score,
-      private: lbScores.reference.best_private_score,
-      isTabpfn: false,
-      isRef: true,
-    },
   ];
   const pubLabel = tr(lang, dict.lb.public);
   const privLabel = tr(lang, dict.lb.private);

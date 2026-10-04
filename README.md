@@ -63,8 +63,8 @@ définies dans `web/app/globals.css` (dark-mode aware).
 
 ## Pages
 
-`/`, `/performances` (CV local + table LB officielle Zindi : 5 nôtres +
-réf Gozie + before), `/methodes`, `/pourquoi-tabpfn` (ouvre sur les
+`/`, `/performances` (CV local + table LB officielle Zindi : nos 5
+soumissions reproductibles + before), `/methodes`, `/pourquoi-tabpfn` (ouvre sur les
 chiffres LB : TabPFN public **0.8667**, notre meilleur), `/carte`
 (Leaflet CDN, zéro dépendance npm, sélecteur 5 modèles + mode accord,
 unanimes 544 / contestés 56, TabPFN==majorité 94.8%).

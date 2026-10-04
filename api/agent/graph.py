@@ -1,4 +1,4 @@
-"""Sahel Agri assistant graph: LangGraph + muse-spark-1.3-contributor.
+"""Agri assistant graph: LangGraph + muse-spark-1.3-contributor.
 
 LLM wiring (verified): langchain-openai ChatOpenAI with use_responses_api=True
 (plain /chat/completions is NOT supported by this model), base_url
@@ -20,9 +20,9 @@ LB_JSON = ROOT / "data" / "processed" / "lb_scores.json"
 MAP_CSV = ROOT / "data" / "processed" / "map_points.csv"
 SAMPLE_CSV = ROOT / "data" / "processed" / "sample_example.csv"
 
-SESSION_ID = os.environ.get("AGUI_SESSION_ID") or f"sahel-agri-{uuid.uuid4().hex[:12]}"
+SESSION_ID = os.environ.get("AGUI_SESSION_ID") or f"agri-{uuid.uuid4().hex[:12]}"
 
-SYSTEM = """You are the Sahel Agri assistant for the cropland-mapping showdown
+SYSTEM = """You are the Agri assistant for the cropland-mapping showdown
 (Zindi GeoAI challenge: winner ensemble vs TabPFN-3.5). Answer in the user's
 language (French or English). TOOL RULE (mandatory): for ANY question about
 scores, models, comparison, map, or predictions, you MUST call the relevant
@@ -32,7 +32,7 @@ generic greeting when the user asks for data. Mapping: compare/scores/leaderboar
 predict/parcel -> predict_parcel. Always cite the REAL numbers returned. Keep
 answers short; the frontend renders your tool data as charts."""
 
-AGENT_NAME = "sahel-agri-assistant"
+AGENT_NAME = "agri-assistant"
 
 
 def _tools():
@@ -72,7 +72,7 @@ def _tools():
 
     @tool
     def get_lb_scores() -> dict:
-        """Official Zindi leaderboard scores for our 5 submissions + Gozie reference + user best before."""
+        """Official Zindi leaderboard scores for our 5 reproducible submissions + user best before."""
         with open(LB_JSON) as f:
             return json.load(f)
 

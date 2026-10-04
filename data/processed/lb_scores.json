@@ -1,1 +1,46 @@
-{"challenge": "geoai-challenge-for-cropland-mapping-in-dry-environments", "challenge_url": "https://zindi.africa/competitions/geoai-challenge-for-cropland-mapping-in-dry-environments", "metric": "accuracy", "ours": [{"comment": "tabpfn-3.5 agg3 no-FE (same features as winner)", "model": "tabpfn", "private_score": 0.838095238, "public_score": 0.866666666, "submission_id": "it8qu4rN"}, {"comment": "winner lgb3 single (his CV-best 0.8830)", "model": "lgb", "private_score": 0.828571428, "public_score": 0.844444444, "submission_id": "Q9UHNZrB"}, {"comment": "winner cat3 single", "model": "cat", "private_score": 0.838095238, "public_score": 0.816666666, "submission_id": "37zUKpdY"}, {"comment": "winner exact repro ensemble3 (Chygos script, era env sklearn1.3.2)", "model": "ensemble", "private_score": 0.826190476, "public_score": 0.827777777, "submission_id": "yDUCpvBj"}, {"comment": "winner xgb3 single", "model": "xgb", "private_score": 0.826190476, "public_score": 0.816666666, "submission_id": "bYfhjbNa"}], "reference": {"best_private_score": 0.852380952, "best_public_score": 0.855555555, "name": "Gozie (Chygos, repo 1st-place)", "note": "None of his 4 repo files reproduces his best: his top LB entry came from another of his 54 submissions (undocumented variant).", "private_rank": 3, "public_rank": 10}, "user_best_before": {"private_score": 0.638095238, "public_score": 0.711111111}}
+{
+  "challenge": "geoai-challenge-for-cropland-mapping-in-dry-environments",
+  "challenge_url": "https://zindi.africa/competitions/geoai-challenge-for-cropland-mapping-in-dry-environments",
+  "metric": "accuracy",
+  "ours": [
+    {
+      "comment": "tabpfn-3.5 agg3 no-FE (same features as winner)",
+      "model": "tabpfn",
+      "private_score": 0.838095238,
+      "public_score": 0.866666666,
+      "submission_id": "it8qu4rN"
+    },
+    {
+      "comment": "winner lgb3 single (his CV-best 0.8830)",
+      "model": "lgb",
+      "private_score": 0.828571428,
+      "public_score": 0.844444444,
+      "submission_id": "Q9UHNZrB"
+    },
+    {
+      "comment": "winner cat3 single",
+      "model": "cat",
+      "private_score": 0.838095238,
+      "public_score": 0.816666666,
+      "submission_id": "37zUKpdY"
+    },
+    {
+      "comment": "winner exact repro ensemble3 (exact winner-script repro, era env)",
+      "model": "ensemble",
+      "private_score": 0.826190476,
+      "public_score": 0.827777777,
+      "submission_id": "yDUCpvBj"
+    },
+    {
+      "comment": "winner xgb3 single",
+      "model": "xgb",
+      "private_score": 0.826190476,
+      "public_score": 0.816666666,
+      "submission_id": "bYfhjbNa"
+    }
+  ],
+  "user_best_before": {
+    "private_score": 0.638095238,
+    "public_score": 0.711111111
+  }
+}

@@ -318,7 +318,7 @@ export default function AssistantPage() {
     <main className="mx-auto max-w-3xl px-4 pb-16">
       <Nav lang={lang} setLang={setLang} />
       <h1 className="mt-2 text-2xl font-bold">
-        {t("Assistant Sahel Agri 🤖", "Sahel Agri assistant 🤖")}
+        {t("Assistant Agri 🤖", "Agri assistant 🤖")}
       </h1>
       <p className="mt-1 text-sm opacity-80">
         {t(
