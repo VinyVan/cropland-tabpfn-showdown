@@ -9,6 +9,8 @@ import { showdown } from "../lib/showdown";
 export default function Home() {
   const [lang, setLang] = useLang();
   const [result, setResult] = useState<string>("");
+  const [gauge, setGauge] = useState<number | null>(null);
+  const [csvText, setCsvText] = useState<string | null>(null);
   const [loading, setLoading] = useState<string | null>(null);
 
   const w = showdown.winner.acc;
@@ -21,14 +23,24 @@ export default function Home() {
   async function demoPredict(model: "winner" | "tabpfn") {
     setLoading(model);
     setResult("");
+    setGauge(null);
     try {
-      const sample = await fetch("/api/py/sample").then((r) => r.json());
+      let body: string;
+      let ctype = "application/json";
+      if (csvText) {
+        body = csvText;
+        ctype = "text/csv";
+      } else {
+        const sample = await fetch("/api/py/sample").then((r) => r.json());
+        body = JSON.stringify(sample.row ?? sample);
+      }
       const res = await fetch(`/api/py/predict?model=${model}`, {
         method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify(sample.row ?? sample),
+        headers: { "content-type": ctype },
+        body,
       }).then((r) => r.json());
       setResult(`${model}: label=${res.label} proba=${res.proba}`);
+      if (typeof res.proba === "number") setGauge(res.proba);
     } catch (e) {
       setResult(`error: ${String(e)}`);
     } finally {
@@ -36,13 +48,13 @@ export default function Home() {
     }
   }
 
-  const allLinks = [
-    { href: "/performances", label: tr(lang, dict.home.cta_perf) },
-    { href: "/methodes", label: tr(lang, dict.home.cta_methods) },
-    { href: "/pourquoi-tabpfn", label: tr(lang, dict.home.secWhy) },
-    { href: "/carte", label: tr(lang, dict.home.secMap) },
-    { href: "/assistant", label: tr(lang, dict.home.secAssistant) },
-  ];
+  function onCsv(e: React.ChangeEvent<HTMLInputElement>) {
+    const f = e.target.files?.[0];
+    if (!f) return;
+    const rd = new FileReader();
+    rd.onload = () => setCsvText(String(rd.result ?? ""));
+    rd.readAsText(f);
+  }
 
   return (
     <>
@@ -53,25 +65,26 @@ export default function Home() {
       <section className="card mt-6">
         <h2 className="text-xl font-semibold">{tr(lang, dict.home.verdict)}</h2>
         <p className="mt-2">{tr(lang, verdict)}</p>
-        <Bar label={`${tr(lang, dict.common.winner)} — accuracy (CV)`} value={w} />
+        <Bar label={`${tr(lang, dict.common.winner)} — accuracy (CV)`} value={w} color="var(--winner, #B08945)" />
         <Bar label={`${tr(lang, dict.common.tabpfn)} — accuracy (CV)`} value={t} />
         <h3 className="mt-4 font-semibold">{tr(lang, dict.lb.title)}</h3>
         <Bar label="TabPFN — public" value={0.8667} />
         <Bar label="TabPFN — privé / private" value={0.8381} />
-        <Bar label="Ensemble — public" value={0.8278} />
-        <Bar label="Ensemble — privé / private" value={0.8262} />
+        <Bar label="Ensemble — public" value={0.8278} color="var(--winner, #B08945)" />
+        <Bar label="Ensemble — privé / private" value={0.8262} color="var(--winner, #B08945)" />
         <div className="mt-4 flex flex-wrap gap-3">
-          {allLinks.map((l) => (
-            <Link key={l.href} className="card !p-3 font-medium underline" href={l.href}>
-              {l.label}
-            </Link>
-          ))}
+          <Link className="card !p-3 font-medium underline" href="/performances">
+            {tr(lang, dict.home.cta_perf)}
+          </Link>
+          <Link className="card !p-3 font-medium underline" href="/methodes">
+            {tr(lang, dict.home.cta_methods)}
+          </Link>
         </div>
       </section>
 
       <section className="card mt-6">
         <h2 className="text-xl font-semibold">{tr(lang, dict.home.demo)}</h2>
-        <div className="mt-3 flex gap-3">
+        <div className="mt-3 flex flex-wrap items-center gap-3">
           {(["winner", "tabpfn"] as const).map((m) => (
             <button
               key={m}
@@ -82,8 +95,28 @@ export default function Home() {
               {loading === m ? "…" : `${tr(lang, dict.home.predict)} — ${m}`}
             </button>
           ))}
+          <label className="card !p-3 text-sm underline cursor-pointer">
+            {csvText ? "CSV ✓" : "CSV…"}
+            <input type="file" accept=".csv" className="hidden" onChange={onCsv} />
+          </label>
+          {csvText && (
+            <button className="text-sm underline opacity-70" onClick={() => setCsvText(null)}>
+              ✕
+            </button>
+          )}
         </div>
         {result && <p className="mt-3 font-mono text-sm">{result}</p>}
+        {gauge !== null && (
+          <div className="mt-2">
+            <div className="h-3 rounded bg-black/10">
+              <div
+                className="h-3 rounded"
+                style={{ width: `${Math.round(gauge * 100)}%`, background: "var(--accent)" }}
+              />
+            </div>
+            <p className="mt-1 text-xs opacity-70">p = {gauge.toFixed(4)}</p>
+          </div>
+        )}
       </section>
     </>
   );
