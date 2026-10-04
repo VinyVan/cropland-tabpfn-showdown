@@ -135,6 +135,18 @@ def sample():
     return {"row": df.iloc[0].to_dict(), "columns": df.columns.tolist()}
 
 
+@app.get("/samples")
+def samples(n: int = 5):
+    """A few test rows to choose from (ID + full feature row)."""
+    df = pd.read_parquet(ROOT / "data" / "raw" / "test_feat.parquet")
+    df = df.head(max(1, min(n, 20))).copy()
+    rows = []
+    for _, r in df.iterrows():
+        d = r.to_dict()
+        rows.append({"id": str(d.get("ID", "")), "row": {k: (float(v) if isinstance(v, float) else v) for k, v in d.items()}})
+    return {"samples": rows}
+
+
 def _parse_body(body: bytes, content_type: str) -> pd.DataFrame:
     if "text/csv" in content_type or (
         body[:1] in (b"I", b"e", b"x") and b"," in body.split(b"\n", 1)[0]

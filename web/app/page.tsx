@@ -11,7 +11,20 @@ export default function Home() {
   const [result, setResult] = useState<string>("");
   const [gauge, setGauge] = useState<number | null>(null);
   const [csvText, setCsvText] = useState<string | null>(null);
+  const [samples, setSamples] = useState<{ id: string; row: Record<string, unknown> }[]>([]);
+  const [sampleId, setSampleId] = useState<string>("");
   const [loading, setLoading] = useState<string | null>(null);
+
+  async function loadSamples() {
+    try {
+      const s = await fetch("/api/py/samples?n=5").then((r) => r.json());
+      const list = (s.samples ?? []) as { id: string; row: Record<string, unknown> }[];
+      setSamples(list);
+      if (list.length && !sampleId) setSampleId(list[0].id);
+    } catch {
+      /* keep sample fallback */
+    }
+  }
 
   const w = showdown.winner.acc;
   const t = showdown.tabpfn.acc;
@@ -20,7 +33,7 @@ export default function Home() {
       ? { fr: `TabPFN-3.5 passe devant (${t} vs ${w} accuracy) — sans tuning ni feature engineering.`, en: `TabPFN-3.5 leads (${t} vs ${w} accuracy) — no tuning, no feature engineering.` }
       : { fr: `Le gagnant garde la tête (${w} vs ${t} accuracy) — TabPFN reste au contact sans tuning.`, en: `The winner stays ahead (${w} vs ${t} accuracy) — TabPFN stays close with no tuning.` };
 
-  async function demoPredict(model: "winner" | "tabpfn") {
+  async function demoPredict(model: "winner" | "tabpfn" | "simple") {
     setLoading(model);
     setResult("");
     setGauge(null);
@@ -30,6 +43,13 @@ export default function Home() {
       if (csvText) {
         body = csvText;
         ctype = "text/csv";
+      } else if (sampleId) {
+        const found = samples.find((s) => s.id === sampleId);
+        if (found) body = JSON.stringify(found.row);
+        else {
+          const sample = await fetch("/api/py/sample").then((r) => r.json());
+          body = JSON.stringify(sample.row ?? sample);
+        }
       } else {
         const sample = await fetch("/api/py/sample").then((r) => r.json());
         body = JSON.stringify(sample.row ?? sample);
@@ -85,7 +105,23 @@ export default function Home() {
       <section className="card mt-6">
         <h2 className="text-xl font-semibold">{tr(lang, dict.home.demo)}</h2>
         <div className="mt-3 flex flex-wrap items-center gap-3">
-          {(["winner", "tabpfn"] as const).map((m) => (
+          <button className="card !p-3 text-sm underline" onClick={loadSamples}>
+            🔀 {tr(lang, { fr: "Exemples", en: "Samples" } as never) as string}
+          </button>
+          {samples.length > 0 && (
+            <select
+              className="card !p-2 text-sm"
+              value={sampleId}
+              onChange={(e) => setSampleId(e.target.value)}
+            >
+              {samples.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {s.id}
+                </option>
+              ))}
+            </select>
+          )}
+          {(["winner", "tabpfn", "simple"] as const).map((m) => (
             <button
               key={m}
               className="card !p-3 border underline"
