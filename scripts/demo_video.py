@@ -38,7 +38,7 @@ def scene_duel():
     ax.bar(x + 0.31, [0.8333, 0.8167], 0.12, label="Simple", color=SIMPLE)
     ax.set_xticks(x, cats)
     ax.set_ylim(0.78, 0.89)
-    ax.set_title("Duel Zindi officiel (accuracy) — 6 soumissions, TabPFN n.1 en public",
+    ax.set_title("Official Zindi duel (accuracy) — 6 submissions, TabPFN n.1 public",
                  fontsize=17, fontweight="bold", pad=14)
     ax.legend(frameon=False, fontsize=10, ncol=6, loc="lower center")
     offs = [-0.31, -0.19, -0.06, 0.06, 0.19, 0.31]
@@ -59,7 +59,7 @@ def scene_local():
     a1.bar(x + 0.25, [0.8772, 0.7731, 0.6374], 0.22, label="Simple", color=SIMPLE)
     a1.set_xticks(x, mets)
     a1.set_ylim(0.5, 1.0)
-    a1.set_title("CV locale GroupKFold-5", fontweight="bold")
+    a1.set_title("Local GroupKFold-5 CV", fontweight="bold")
     a1.legend(frameon=False, fontsize=10)
     a2.bar(["Ensemble\n71.1s", "TabPFN\n7.2s", "Simple\n4.8s"], [71.087, 7.23, 4.81],
            color=[WINNER, TABPFN, SIMPLE])
@@ -81,7 +81,7 @@ def scene_map():
                alpha=0.85, label="Cropland TabPFN (167)")
     ax.set_xlabel("longitude")
     ax.set_ylabel("latitude")
-    ax.set_title("600 parcelles Fergana + Orenburg — 544 unanimes, 56 contestees",
+    ax.set_title("600 parcels Fergana + Orenburg — 544 unanimous, 56 disputed",
                  fontsize=16, fontweight="bold", pad=12)
     ax.legend(frameon=False, fontsize=11, loc="lower right")
     save(fig, "30_map.png")
@@ -133,4 +133,3 @@ if __name__ == "__main__":
     scene_duel()
     scene_local()
     scene_map()
-    scene_chat()

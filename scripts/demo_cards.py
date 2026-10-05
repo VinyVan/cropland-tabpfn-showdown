@@ -25,10 +25,10 @@ def title_card(path):
     d.rectangle([0, 0, W, 10], fill=ACCENT)
     d.rectangle([0, H - 10, W, H], fill=ACCENT)
     centered(d, 150, "CROPLAND SHOWDOWN", font(64, True), INK)
-    centered(d, 250, "Gagnant Zindi vs TabPFN-3.5", font(36), ACCENT)
-    centered(d, 350, "6 soumissions officielles - protocole honnête - chiffres réels",
+    centered(d, 250, "Zindi Winner vs TabPFN-3.5", font(36), ACCENT)
+    centered(d, 350, "6 official submissions - honest protocol - real numbers",
              font(26), GRAY)
-    centered(d, 430, "Zindi public 0.8667  |  CV locale 0.8851  |  10x plus rapide",
+    centered(d, 430, "Zindi public 0.8667  |  Local CV 0.8851  |  10x faster",
              font(30, True), GOLD)
     centered(d, 540, "PriorLabs Hackathon 3.5", font(24), GRAY)
     img.save(path)
@@ -40,12 +40,12 @@ def end_card(path):
     d = ImageDraw.Draw(img)
     d.rectangle([0, 0, W, 10], fill=ACCENT)
     d.rectangle([0, H - 10, W, H], fill=ACCENT)
-    centered(d, 170, "TabPFN-3.5 gagne : précision + vitesse,", font(40, True), INK)
-    centered(d, 230, "zéro tuning, zéro feature engineering.", font(40, True), INK)
+    centered(d, 170, "TabPFN-3.5 wins: accuracy + speed,", font(40, True), INK)
+    centered(d, 230, "zero tuning, zero feature engineering.", font(40, True), INK)
     centered(d, 340, "github.com/VinyVan/cropland-tabpfn-showdown", font(28), ACCENT)
-    centered(d, 410, "Assistant Agri (LangGraph + AG-UI) - carte 600 parcelles - registre 6 modèles",
+    centered(d, 410, "Agri assistant (LangGraph + AG-UI) - 600-parcel map - 6-model registry",
              font(24), GRAY)
-    centered(d, 500, "Merci au jury Prior Labs", font(26), GOLD)
+    centered(d, 500, "Thank you, Prior Labs jury", font(26), GOLD)
     img.save(path)
     print("OK", path)
 
