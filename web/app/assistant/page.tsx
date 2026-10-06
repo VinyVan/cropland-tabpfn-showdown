@@ -17,14 +17,6 @@ export default function AssistantPage() {
       <h1 className="mt-2 text-2xl font-bold">
         {T(lang, "Assistant Agri", "Agri assistant", "Agri-Assistent")}
       </h1>
-      <p className="mt-1 text-sm opacity-80">
-        {T(
-          lang,
-          "Propulsé par muse-spark-1.3-contributor (LangGraph + AG-UI). Prédictions, explications, graphiques.",
-          "Powered by muse-spark-1.3-contributor (LangGraph + AG-UI). Predictions, explanations, charts.",
-          "Mit muse-spark-1.3-contributor (LangGraph + AG-UI). Vorhersagen, Erklärungen, Diagramme."
-        )}
-      </p>
       <ChatPanel />
       <p className="mt-2 text-xs opacity-60">{tr(lang, dict.assistant.note)}</p>
     </main>
