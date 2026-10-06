@@ -39,20 +39,25 @@ export function ChatPopup() {
         {open ? "✕" : "🤖"}
       </button>
       {open && (
-        <div className="card fixed bottom-20 right-5 z-50 flex max-h-[70vh] w-[min(92vw,380px)] flex-col !p-3 shadow-xl">
-          <div className="mb-1 flex items-center justify-between">
-            <span className="text-sm font-bold">
-              {T(lang, "Assistant Agri 🤖", "Agri assistant 🤖", "Agri-Assistent 🤖")}
-            </span>
-            <button
-              className="text-sm opacity-60"
-              onClick={() => setOpen(false)}
-              aria-label="close"
-            >
-              ✕
-            </button>
+        <div className="fixed bottom-20 right-5 z-50 flex max-h-[70vh] w-[min(92vw,380px)] flex-col overflow-hidden rounded-2xl shadow-2xl ring-1 ring-black/10">
+          <div
+            className="px-4 py-3 text-white"
+            style={{ background: "linear-gradient(135deg, var(--accent), #0d3b2e)" }}
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-bold">
+                🤖 {T(lang, "Assistant Agri", "Agri assistant", "Agri-Assistent")}
+              </span>
+              <button
+                className="rounded-full px-2 py-0.5 text-sm opacity-80 hover:opacity-100"
+                onClick={() => setOpen(false)}
+                aria-label="close"
+              >
+                ✕
+              </button>
+            </div>
           </div>
-          <div className="min-h-0 flex-1 overflow-y-auto">
+          <div className="card min-h-0 flex-1 overflow-y-auto !rounded-none !border-0">
             <ChatPanel compact />
           </div>
         </div>

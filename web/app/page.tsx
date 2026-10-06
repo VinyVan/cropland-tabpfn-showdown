@@ -81,6 +81,24 @@ export default function Home() {
       <Nav lang={lang} setLang={setLang} />
       <h1 className="text-3xl font-bold">{tr(lang, dict.home.title)}</h1>
       <p className="mt-2 opacity-80">{tr(lang, dict.home.subtitle)}</p>
+      <div className="mt-3 flex flex-wrap gap-2 text-sm">
+        <a
+          className="card !px-3 !py-1 font-medium underline"
+          href="https://zindi.africa/competitions/geoai-challenge-for-cropland-mapping-in-dry-environments"
+          target="_blank"
+          rel="noreferrer"
+        >
+          🏆 Zindi
+        </a>
+        <a
+          className="card !px-3 !py-1 font-medium underline"
+          href="https://github.com/VinyVan/cropland-tabpfn-showdown"
+          target="_blank"
+          rel="noreferrer"
+        >
+          💻 GitHub
+        </a>
+      </div>
 
       <section className="card mt-6">
         <h2 className="text-xl font-semibold">{tr(lang, dict.home.verdict)}</h2>
