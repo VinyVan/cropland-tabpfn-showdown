@@ -36,7 +36,7 @@ export function ChatPopup() {
         className="card fixed bottom-5 right-5 z-50 !rounded-full !p-3 text-xl shadow-lg"
         style={{ background: "var(--accent)", color: "#fff" }}
       >
-        {open ? "✕" : "🤖"}
+        {open ? "✕" : "💬"}
       </button>
       {open && (
         <div className="fixed bottom-20 right-5 z-50 flex max-h-[70vh] w-[min(92vw,380px)] flex-col overflow-hidden rounded-2xl shadow-2xl ring-1 ring-black/10">
@@ -46,7 +46,7 @@ export function ChatPopup() {
           >
             <div className="flex items-center justify-between">
               <span className="text-sm font-bold">
-                🤖 {T(lang, "Assistant Agri", "Agri assistant", "Agri-Assistent")}
+                {T(lang, "Assistant Agri", "Agri assistant", "Agri-Assistent")}
               </span>
               <button
                 className="rounded-full px-2 py-0.5 text-sm opacity-80 hover:opacity-100"
