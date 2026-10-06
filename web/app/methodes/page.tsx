@@ -28,9 +28,9 @@ export default function Methodes() {
       <section className="card mt-4">
         <h2 className="text-xl font-semibold">{tr(lang, dict.methods.schemaTitle)}</h2>
         <pre className="mt-2 overflow-x-auto font-mono text-xs leading-relaxed">
-{`winner:  raw (189) ──▶ intra-fold grid aggs (+36) ──▶ 218 feats ──▶ CB+XGB+LGBM ──▶ mean proba ──▶ seuil 0.5
-tabpfn:  raw (189) ──▶ 182 feats bruts ──▶ TabPFN-3.5 (1 passe, no tuning) ──▶ proba ──▶ seuil 0.5
-split:   GroupKFold-5 sur grid_id, seed 32 — IDENTIQUE des deux côtés`}
+{`winner:  raw (189) ──▶ intra-fold grid aggs (+36) ──▶ 218 feats ──▶ CB+XGB+LGBM ──▶ mean proba ──▶ threshold 0.5
+tabpfn:  raw (189) ──▶ 182 raw feats ──▶ TabPFN-3.5 (1 pass, no tuning) ──▶ proba ──▶ threshold 0.5
+split:   GroupKFold-5 on grid_id, seed 32 — IDENTICAL both sides`}
         </pre>
       </section>
     </>
